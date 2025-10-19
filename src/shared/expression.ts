@@ -4,6 +4,8 @@ import type {
   CallExpressionNode,
   FunctionDeclarationNode,
   FunctionExpressionNode,
+  LiteralNode,
+  LogicalExpressionNode,
   MethodDefinitionNode
 } from '@app/types.ts'
 
@@ -50,4 +52,22 @@ export function isFunctionExpression(node: ASTNode): node is FunctionExpressionN
  */
 export function isMethodDefinition(node: ASTNode): node is MethodDefinitionNode {
   return node.type === 'MethodDefinition'
+}
+
+/**
+ * Type guard to check if a node is a logical expression.
+ * @param node - The AST node to check
+ * @returns True if the node is a logical expression, false otherwise
+ */
+export function isLogicalExpression(node: ASTNode): node is LogicalExpressionNode {
+  return node.type === 'LogicalExpression'
+}
+
+/**
+ * Type guard to check if a node is a literal.
+ * @param node - The AST node to check
+ * @returns True if the node is a literal, false otherwise
+ */
+export function isLiteral(node: ASTNode): node is LiteralNode {
+  return node.type === 'Literal'
 }

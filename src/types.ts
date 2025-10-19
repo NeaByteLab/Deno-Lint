@@ -206,6 +206,30 @@ export interface TSTypeAliasDeclarationNode {
 }
 
 /**
+ * AST node representing a literal value (string, number, boolean, etc.).
+ */
+export interface LiteralNode {
+  /** Type identifier for literal nodes */
+  type: 'Literal'
+  /** The literal value */
+  value: string | number | boolean | null
+}
+
+/**
+ * AST node representing a logical expression (&&, ||, ??).
+ */
+export interface LogicalExpressionNode {
+  /** Type identifier for logical expressions */
+  type: 'LogicalExpression'
+  /** The logical operator */
+  operator: '&&' | '||' | '??'
+  /** Left side of the expression */
+  left: ASTNode
+  /** Right side of the expression */
+  right: ASTNode
+}
+
+/**
  * AST node representing a variable declarator.
  */
 export interface VariableDeclaratorNode {
@@ -229,6 +253,8 @@ export type ASTNode =
   | FunctionDeclarationNode
   | FunctionExpressionNode
   | InterfaceDeclarationNode
+  | LiteralNode
+  | LogicalExpressionNode
   | MethodDefinitionNode
   | TSEnumDeclarationNode
   | TSEnumMemberNode

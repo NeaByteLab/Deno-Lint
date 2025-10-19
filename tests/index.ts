@@ -22,12 +22,17 @@ export function verifyAutoFix(
   rulesId: string,
   code: string,
   expectedFixedCode: string,
-  description: string
+  description: string,
+  expectedCount = 1
 ): void {
   const diagnostics = Deno.lint.runPlugin(plugin, 'test.ts', code)
   const ruleDiagnostics = diagnostics.filter((d) => d.id === rulesId)
   console.log(`${description} diagnostics:`, JSON.stringify(ruleDiagnostics, null, 2))
-  assertEquals(ruleDiagnostics.length, 1, `Expected 1 diagnostic for ${description}`)
+  assertEquals(
+    ruleDiagnostics.length,
+    expectedCount,
+    `Expected ${expectedCount} diagnostic for ${description}`
+  )
   const diagnostic = ruleDiagnostics[0]
   assertEquals(diagnostic.fix?.length, 1, `Should have auto-fix available for ${description}`)
   const fix = diagnostic.fix?.[0]

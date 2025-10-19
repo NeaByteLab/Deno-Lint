@@ -2,6 +2,7 @@ import type { LintPlugin } from '@app/types.ts'
 import { asyncFunctionNamingRule } from '@rules/async-function-naming.ts'
 import { explicitParameterTypesRule } from '@rules/explicit-parameter-types.ts'
 import { explicitReturnTypesRule } from '@rules/explicit-return-types.ts'
+import { preferNullishCoalescingRule } from '@rules/prefer-nullish-coalescing.ts'
 import { requireErrorHandlingRule } from '@rules/require-error-handling.ts'
 
 /**
@@ -13,6 +14,7 @@ const plugin: LintPlugin = {
     'async-function-naming': asyncFunctionNamingRule,
     'explicit-parameter-types': explicitParameterTypesRule,
     'explicit-return-types': explicitReturnTypesRule,
+    'prefer-nullish-coalescing': preferNullishCoalescingRule,
     'require-error-handling': requireErrorHandlingRule
   }
 }
