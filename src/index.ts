@@ -7,6 +7,7 @@ import { preferNullishCoalescingRule } from '@rules/PreferNullishCoalescing.ts'
 import { preferOptionalChainRule } from '@rules/PreferOptionalChain.ts'
 import { preferPromiseRejectErrorsRule } from '@rules/PreferPromiseRejectErrors.ts'
 import { preferTemplateLiteralsRule } from '@rules/PreferTemplateLiterals.ts'
+import { preferEarlyReturnRule } from '@rules/PreferEarlyReturn.ts'
 import { requireErrorHandlingRule } from '@rules/RequireErrorHandling.ts'
 
 /**
@@ -22,6 +23,7 @@ const plugin: LintPlugin = {
     'prefer-nullish-coalescing': preferNullishCoalescingRule,
     'prefer-optional-chain': preferOptionalChainRule,
     'prefer-template-literals': preferTemplateLiteralsRule,
+    'prefer-early-return': preferEarlyReturnRule,
     'prefer-promise-reject-errors': preferPromiseRejectErrorsRule,
     'require-error-handling': requireErrorHandlingRule
   }

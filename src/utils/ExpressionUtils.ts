@@ -4,6 +4,7 @@ import type {
   AssignmentExpressionNode,
   AwaitExpressionNode,
   BinaryExpressionNode,
+  BlockStatementNode,
   CallExpressionNode,
   ChainExpressionNode,
   ClassExpressionNode,
@@ -11,12 +12,14 @@ import type {
   DenoASTNode,
   FunctionDeclarationNode,
   FunctionExpressionNode,
+  IfStatementNode,
   LiteralNode,
   LogicalExpressionNode,
   MemberExpressionNode,
   MethodDefinitionNode,
   NewExpressionNode,
   ObjectExpressionNode,
+  ReturnStatementNode,
   ThisExpressionNode,
   TSAsExpressionNode,
   UnaryExpressionNode,
@@ -67,6 +70,15 @@ export function isAwaitExpression(node: DenoASTNode): node is AwaitExpressionNod
  */
 export function isBinaryExpression(node: DenoASTNode): node is BinaryExpressionNode {
   return node.type === 'BinaryExpression'
+}
+
+/**
+ * Type guard to check if a node is a block statement.
+ * @param node - The AST node to check
+ * @returns True if the node is a block statement, false otherwise
+ */
+export function isBlockStatement(node: DenoASTNode): node is BlockStatementNode {
+  return node.type === 'BlockStatement'
 }
 
 /**
@@ -124,6 +136,15 @@ export function isFunctionExpression(node: DenoASTNode): node is FunctionExpress
 }
 
 /**
+ * Type guard to check if a node is an if statement.
+ * @param node - The AST node to check
+ * @returns True if the node is an if statement, false otherwise
+ */
+export function isIfStatement(node: DenoASTNode): node is IfStatementNode {
+  return node.type === 'IfStatement'
+}
+
+/**
  * Type guard to check if a node is a literal.
  * @param node - The AST node to check
  * @returns True if the node is a literal, false otherwise
@@ -175,6 +196,15 @@ export function isNewExpression(node: DenoASTNode): node is NewExpressionNode {
  */
 export function isObjectExpression(node: DenoASTNode): node is ObjectExpressionNode {
   return node.type === 'ObjectExpression'
+}
+
+/**
+ * Type guard to check if a node is a return statement.
+ * @param node - The AST node to check
+ * @returns True if the node is a return statement, false otherwise
+ */
+export function isReturnStatement(node: DenoASTNode): node is ReturnStatementNode {
+  return node.type === 'ReturnStatement'
 }
 
 /**

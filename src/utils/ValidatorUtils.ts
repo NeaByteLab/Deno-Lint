@@ -1,6 +1,10 @@
 import type {
+  ArrowFunctionExpressionNode,
+  BlockStatementNode,
   CallExpressionNode,
   DenoASTNode,
+  FunctionDeclarationNode,
+  FunctionExpressionNode,
   IdentifierNode,
   LintContext,
   LogicalExpressionNode,
@@ -10,7 +14,14 @@ import type {
   TSTypeNameNode,
   TSTypeReferenceNode
 } from '@interfaces/index.ts'
-import { isLiteral, isLogicalExpression } from '@utils/index.ts'
+import {
+  isArrowFunctionExpression,
+  isFunctionDeclaration,
+  isFunctionExpression,
+  isIfStatement,
+  isLiteral,
+  isLogicalExpression
+} from '@utils/index.ts'
 import { isDenoApiCall, isErrorConstructor, isPromiseReject } from '@utils/index.ts'
 
 /**
@@ -160,6 +171,59 @@ export function hasExplicitParameterTypes(node: DenoASTNode): boolean {
  */
 export function hasExplicitReturnType(node: DenoASTNode): boolean {
   return (node as { returnType?: string }).returnType !== undefined
+}
+
+/**
+ * Checks if a function has nested conditions that could benefit from early returns.
+ * @param node - The function node to analyze
+ * @returns True if the function has nested conditions that could be refactored
+ */
+export function hasNestedConditions(node: DenoASTNode): boolean {
+  if (
+    !isFunctionDeclaration(node) &&
+    !isFunctionExpression(node) &&
+    !isArrowFunctionExpression(node)
+  ) {
+    return false
+  }
+  const functionNode = node as
+    | FunctionDeclarationNode
+    | FunctionExpressionNode
+    | ArrowFunctionExpressionNode
+  if (!functionNode.body || functionNode.body.type !== 'BlockStatement') {
+    return false
+  }
+  const blockStatement = functionNode.body as BlockStatementNode
+  const statements = blockStatement.body
+  if (statements.length === 0) {
+    return false
+  }
+  for (const statement of statements) {
+    if (statement.type === 'IfStatement') {
+      if (statement.alternate && hasNestedIfStatement(statement.alternate)) {
+        return true
+      }
+      if (hasNestedIfStatement(statement.consequent)) {
+        return true
+      }
+    }
+  }
+  return false
+}
+
+/**
+ * Checks if a statement contains nested if statements that could benefit from early returns.
+ * @param statement - The statement to analyze
+ * @returns True if the statement contains nested if statements
+ */
+export function hasNestedIfStatement(statement: DenoASTNode): boolean {
+  if (statement.type === 'BlockStatement') {
+    return statement.body.some((stmt) => hasNestedIfStatement(stmt as DenoASTNode))
+  }
+  if (isIfStatement(statement)) {
+    return true
+  }
+  return false
 }
 
 /**
