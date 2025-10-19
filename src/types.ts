@@ -50,6 +50,20 @@ export interface ClassDeclarationNode {
 }
 
 /**
+ * AST node representing a conditional expression (condition ? true : false).
+ */
+export interface ConditionalExpressionNode {
+  /** Type identifier for conditional expressions */
+  type: 'ConditionalExpression'
+  /** The test condition */
+  test: ASTNode
+  /** The consequent (true branch) */
+  consequent: ASTNode
+  /** The alternate (false branch) */
+  alternate: ASTNode
+}
+
+/**
  * AST node representing a function declaration.
  */
 export interface FunctionDeclarationNode {
@@ -79,6 +93,16 @@ export interface FunctionExpressionNode {
   params: Array<ParameterNode>
   /** Optional parent node reference */
   parent?: { type: string }
+}
+
+/**
+ * AST node representing an identifier.
+ */
+export interface IdentifierNode {
+  /** Type identifier for identifiers */
+  type: 'Identifier'
+  /** The name of the identifier */
+  name: string
 }
 
 /**
@@ -126,6 +150,46 @@ export interface LintPlugin {
       create(context: LintContext): Record<string, (node: ASTNode) => void>
     }
   >
+}
+
+/**
+ * AST node representing a literal value (string, number, boolean, etc.).
+ */
+export interface LiteralNode {
+  /** Type identifier for literal nodes */
+  type: 'Literal'
+  /** The literal value */
+  value: string | number | boolean | null
+}
+
+/**
+ * AST node representing a logical expression (&&, ||, ??).
+ */
+export interface LogicalExpressionNode {
+  /** Type identifier for logical expressions */
+  type: 'LogicalExpression'
+  /** The logical operator */
+  operator: '&&' | '||' | '??'
+  /** Left side of the expression */
+  left: ASTNode
+  /** Right side of the expression */
+  right: ASTNode
+}
+
+/**
+ * AST node representing a member expression (object.property).
+ */
+export interface MemberExpressionNode {
+  /** Type identifier for member expressions */
+  type: 'MemberExpression'
+  /** The object being accessed */
+  object: ASTNode
+  /** The property being accessed */
+  property: ASTNode
+  /** Whether this is computed property access (object[property]) */
+  computed?: boolean
+  /** Whether this is optional chaining (object?.property) */
+  optional?: boolean
 }
 
 /**
@@ -206,37 +270,13 @@ export interface TSTypeAliasDeclarationNode {
 }
 
 /**
- * AST node representing a literal value (string, number, boolean, etc.).
- */
-export interface LiteralNode {
-  /** Type identifier for literal nodes */
-  type: 'Literal'
-  /** The literal value */
-  value: string | number | boolean | null
-}
-
-/**
- * AST node representing a logical expression (&&, ||, ??).
- */
-export interface LogicalExpressionNode {
-  /** Type identifier for logical expressions */
-  type: 'LogicalExpression'
-  /** The logical operator */
-  operator: '&&' | '||' | '??'
-  /** Left side of the expression */
-  left: ASTNode
-  /** Right side of the expression */
-  right: ASTNode
-}
-
-/**
  * AST node representing a variable declarator.
  */
 export interface VariableDeclaratorNode {
   /** Type identifier for variable declarators */
   type: 'VariableDeclarator'
   /** Variable identifier with name */
-  id: { type: 'Identifier'; name: string }
+  id?: { type: 'Identifier'; name: string }
   /** Optional parent node reference */
   parent?: { kind: string }
 }
@@ -250,13 +290,27 @@ export type ASTNode =
   | AwaitExpressionNode
   | CallExpressionNode
   | ClassDeclarationNode
+  | ConditionalExpressionNode
   | FunctionDeclarationNode
   | FunctionExpressionNode
+  | IdentifierNode
   | InterfaceDeclarationNode
   | LiteralNode
   | LogicalExpressionNode
+  | MemberExpressionNode
   | MethodDefinitionNode
+  | ParameterNode
   | TSEnumDeclarationNode
   | TSEnumMemberNode
   | TSTypeAliasDeclarationNode
   | VariableDeclaratorNode
+
+/**
+ * Extended AST node type with additional Deno-specific properties.
+ */
+export type DenoASTNode = ASTNode & {
+  /** Whether this node represents optional chaining (e.g., obj?.prop) */
+  optional?: boolean
+  /** Whether this node represents computed property access (e.g., obj[prop]) */
+  computed?: boolean
+}

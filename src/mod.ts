@@ -3,6 +3,7 @@ import { asyncFunctionNamingRule } from '@rules/async-function-naming.ts'
 import { explicitParameterTypesRule } from '@rules/explicit-parameter-types.ts'
 import { explicitReturnTypesRule } from '@rules/explicit-return-types.ts'
 import { preferNullishCoalescingRule } from '@rules/prefer-nullish-coalescing.ts'
+import { preferOptionalChainRule } from '@rules/prefer-optional-chain.ts'
 import { requireErrorHandlingRule } from '@rules/require-error-handling.ts'
 
 /**
@@ -15,6 +16,7 @@ const plugin: LintPlugin = {
     'explicit-parameter-types': explicitParameterTypesRule,
     'explicit-return-types': explicitReturnTypesRule,
     'prefer-nullish-coalescing': preferNullishCoalescingRule,
+    'prefer-optional-chain': preferOptionalChainRule,
     'require-error-handling': requireErrorHandlingRule
   }
 }

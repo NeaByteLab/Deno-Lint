@@ -2,25 +2,6 @@ import type { ASTNode, LintContext, LintFixer, LogicalExpressionNode } from '@ap
 import { isLiteral, isLogicalExpression } from '@shared/expression.ts'
 
 /**
- * Checks if a logical expression should use nullish coalescing instead of logical OR.
- * @param node - The logical expression node to check
- * @returns True if the expression should use nullish coalescing, false otherwise
- */
-function shouldUseNullishCoalescing(node: LogicalExpressionNode): boolean {
-  if (node.operator !== '||') {
-    return false
-  }
-  const rightSide = node.right
-  if (isLiteral(rightSide)) {
-    const value = rightSide.value
-    if (value === '' || value === 0 || value === false) {
-      return true
-    }
-  }
-  return false
-}
-
-/**
  * Lint rule for preferring nullish coalescing over logical OR.
  */
 export const preferNullishCoalescingRule = {
@@ -54,4 +35,23 @@ export const preferNullishCoalescingRule = {
       }
     }
   }
+}
+
+/**
+ * Checks if a logical expression should use nullish coalescing instead of logical OR.
+ * @param node - The logical expression node to check
+ * @returns True if the expression should use nullish coalescing, false otherwise
+ */
+function shouldUseNullishCoalescing(node: LogicalExpressionNode): boolean {
+  if (node.operator !== '||') {
+    return false
+  }
+  const rightSide = node.right
+  if (isLiteral(rightSide)) {
+    const value = rightSide.value
+    if (value === '' || value === 0 || value === false) {
+      return true
+    }
+  }
+  return false
 }

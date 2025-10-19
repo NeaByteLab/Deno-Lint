@@ -8,6 +8,7 @@ Deno lint plugin collection for identifying and reporting on patterns found in c
 - [`explicit-parameter-types`](./examples/explicit-parameter-types.md) - Requires explicit type annotations on parameters
 - [`explicit-return-types`](./examples/explicit-return-types.md) - Requires explicit return type annotations
 - [`prefer-nullish-coalescing`](./examples/prefer-nullish-coalescing.md) - Prefers nullish coalescing (??) over logical OR (||) for null/undefined checks
+- [`prefer-optional-chain`](./examples/prefer-optional-chain.md) - Prefers optional chaining (?.) over logical AND (&&) for property access
 - [`require-error-handling`](./examples/require-error-handling.md) - Ensures Deno file operations are properly awaited
 
 ## Installation
