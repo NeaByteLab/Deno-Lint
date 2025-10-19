@@ -7,12 +7,13 @@ import type {
   LintFixer
 } from '@interfaces/index.ts'
 import {
+  containsArgumentsUsage,
+  containsThisExpression,
   isBlockStatement,
   isCallExpression,
   isFunctionExpression,
   isIdentifier,
-  isMemberExpression,
-  isThisExpression
+  isMemberExpression
 } from '@utils/index.ts'
 
 /**
@@ -72,8 +73,9 @@ function createArrowFunctionFix(
     } else if (params.length === 1 && params[0] && isIdentifier(params[0])) {
       paramsText = context.sourceCode.getText(params[0])
     } else {
-      paramsText =
-        '(' + params.map((param: DenoASTNode) => context.sourceCode.getText(param)).join(', ') + ')'
+      paramsText = '(' + params.map((param: DenoASTNode) =>
+        context.sourceCode.getText(param)
+      ).join(', ') + ')'
     }
     let bodyText = ''
     if (isBlockStatement(body)) {
@@ -84,70 +86,6 @@ function createArrowFunctionFix(
     const arrowFunction = `${paramsText} => ${bodyText}`
     return fixer.replaceText(node, arrowFunction)
   }
-}
-
-/**
- * Recursively checks if a statement contains 'arguments' usage.
- * @param stmt - The statement to check
- * @returns True if the statement contains 'arguments', false otherwise
- */
-function containsArgumentsUsage(stmt: DenoASTNode): boolean {
-  if (isIdentifier(stmt) && stmt.name === 'arguments') {
-    return true
-  }
-  for (const key in stmt) {
-    if (Object.prototype.hasOwnProperty.call(stmt, key)) {
-      const value = (stmt as unknown as Record<string, unknown>)[key]
-      if (value && typeof value === 'object') {
-        if (Array.isArray(value)) {
-          for (const item of value) {
-            if (item && typeof item === 'object' && 'type' in item) {
-              if (containsArgumentsUsage(item as DenoASTNode)) {
-                return true
-              }
-            }
-          }
-        } else if ('type' in value) {
-          if (containsArgumentsUsage(value as DenoASTNode)) {
-            return true
-          }
-        }
-      }
-    }
-  }
-  return false
-}
-
-/**
- * Recursively checks if a statement contains a 'this' expression.
- * @param stmt - The statement to check
- * @returns True if the statement contains 'this', false otherwise
- */
-function containsThisExpression(stmt: DenoASTNode): boolean {
-  if (isThisExpression(stmt)) {
-    return true
-  }
-  for (const key in stmt) {
-    if (Object.prototype.hasOwnProperty.call(stmt, key)) {
-      const value = (stmt as unknown as Record<string, unknown>)[key]
-      if (value && typeof value === 'object') {
-        if (Array.isArray(value)) {
-          for (const item of value) {
-            if (item && typeof item === 'object' && 'type' in item) {
-              if (containsThisExpression(item as DenoASTNode)) {
-                return true
-              }
-            }
-          }
-        } else if ('type' in value) {
-          if (containsThisExpression(value as DenoASTNode)) {
-            return true
-          }
-        }
-      }
-    }
-  }
-  return false
 }
 
 /**

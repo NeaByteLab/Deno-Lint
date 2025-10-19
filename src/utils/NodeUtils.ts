@@ -1,22 +1,133 @@
 import type {
   ArrowFunctionExpressionNode,
+  BlockStatementNode,
   CallExpressionNode,
   DenoASTNode,
+  ForStatementNode,
   FunctionDeclarationNode,
   FunctionExpressionNode,
   IdentifierNode,
+  IfStatementNode,
   LiteralNode,
   MemberExpressionNode,
   MethodDefinitionNode,
-  ParameterNode
+  ParameterNode,
+  ReturnStatementNode
 } from '@interfaces/index.ts'
 import {
   isBinaryExpression,
+  isBlockStatement,
   isCallExpression,
+  isForStatement,
+  isIdentifier,
+  isIfStatement,
   isLiteral,
   isNewExpression,
+  isReturnStatement,
+  isThisExpression,
   KNOWN_ERROR_CLASSES
 } from '@utils/index.ts'
+
+/**
+ * Checks if a for loop can be replaced with a specific array method.
+ * @param node - The for loop node
+ * @param method - The array method to check for ('every' or 'some')
+ * @returns True if the loop can be replaced, false otherwise
+ */
+export function canReplaceWithArrayMethod(node: DenoASTNode, method: 'every' | 'some'): boolean {
+  if (!isForStatement(node)) {
+    return false
+  }
+  const forNode = node as ForStatementNode
+  const body = forNode.body
+  const expectedValue = method === 'every' ? false : true
+  return containsReturnValue(body, expectedValue)
+}
+
+/**
+ * Checks if a statement contains 'arguments' usage.
+ * @param stmt - The statement to check
+ * @returns True if the statement contains 'arguments'
+ */
+export function containsArgumentsUsage(stmt: DenoASTNode): boolean {
+  return containsMatchingNode(stmt, (node) => isIdentifier(node) && node.name === 'arguments')
+}
+
+/**
+ * Generic AST traversal function that searches for specific patterns.
+ * @param node - The AST node to traverse
+ * @param predicate - Function that determines if a node matches the search criteria
+ * @returns True if any node matches the predicate, false otherwise
+ */
+export function containsMatchingNode(
+  node: DenoASTNode,
+  predicate: (node: DenoASTNode) => boolean
+): boolean {
+  if (predicate(node)) {
+    return true
+  }
+  for (const key in node) {
+    if (Object.prototype.hasOwnProperty.call(node, key)) {
+      const value = (node as unknown as Record<string, unknown>)[key]
+      if (value && typeof value === 'object') {
+        if (Array.isArray(value)) {
+          for (const item of value) {
+            if (item && typeof item === 'object' && 'type' in item) {
+              if (containsMatchingNode(item as DenoASTNode, predicate)) {
+                return true
+              }
+            }
+          }
+        } else if ('type' in value) {
+          if (containsMatchingNode(value as DenoASTNode, predicate)) {
+            return true
+          }
+        }
+      }
+    }
+  }
+  return false
+}
+
+/**
+ * Checks if a statement contains a return statement with specific value.
+ * @param stmt - The statement to check
+ * @param expectedValue - The expected return value (true/false)
+ * @returns True if the statement contains the expected return value
+ */
+export function containsReturnValue(stmt: DenoASTNode, expectedValue: boolean): boolean {
+  if (isReturnStatement(stmt)) {
+    const returnNode = stmt as ReturnStatementNode
+    const returnArg = returnNode.argument
+    if (returnArg && isLiteral(returnArg) && returnArg.value === expectedValue) {
+      return true
+    }
+  }
+  if (isIfStatement(stmt)) {
+    const ifStmt = stmt as IfStatementNode
+    if (containsReturnValue(ifStmt.consequent, expectedValue)) {
+      return true
+    }
+    if (ifStmt.alternate && containsReturnValue(ifStmt.alternate, expectedValue)) {
+      return true
+    }
+  }
+  if (isBlockStatement(stmt)) {
+    const blockStmt = stmt as BlockStatementNode
+    const statements = blockStmt.body || []
+    return statements.some((s: DenoASTNode) => containsReturnValue(s, expectedValue))
+  }
+  return false
+}
+
+/**
+ * Checks if a statement contains 'this' expression usage.
+ * @param stmt - The statement to check
+ * @returns True if the statement contains 'this'
+ */
+export function containsThisExpression(stmt: DenoASTNode): boolean {
+  return containsMatchingNode(stmt, isThisExpression)
+}
 
 /**
  * Gets the method name from a Deno API call.

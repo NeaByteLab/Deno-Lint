@@ -16,8 +16,7 @@ Deno.test('for loop in arrow function (should trigger)', () =>
     }
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop in async function (should trigger)', () =>
   runnerTest(
@@ -33,8 +32,7 @@ Deno.test('for loop in async function (should trigger)', () =>
     }
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop in class method (should trigger)', () =>
   runnerTest(
@@ -52,8 +50,7 @@ Deno.test('for loop in class method (should trigger)', () =>
     }
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop in function (should trigger)', () =>
   runnerTest(
@@ -69,8 +66,7 @@ Deno.test('for loop in function (should trigger)', () =>
     }
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with break instead of return (should not trigger)', () =>
   runnerTest(
@@ -86,8 +82,7 @@ Deno.test('for loop with break instead of return (should not trigger)', () =>
     return found
   `,
     0
-  )
-)
+  ))
 
 Deno.test('for loop with complex condition (should trigger)', () =>
   runnerTest(
@@ -101,8 +96,7 @@ Deno.test('for loop with complex condition (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with continue (should trigger)', () =>
   runnerTest(
@@ -119,8 +113,7 @@ Deno.test('for loop with continue (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with counter initialization (should trigger)', () =>
   runnerTest(
@@ -135,8 +128,7 @@ Deno.test('for loop with counter initialization (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with different array names (should trigger)', () =>
   runnerTest(
@@ -150,8 +142,7 @@ Deno.test('for loop with different array names (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with different increment (should trigger)', () =>
   runnerTest(
@@ -165,8 +156,7 @@ Deno.test('for loop with different increment (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with different variable names (should trigger)', () =>
   runnerTest(
@@ -180,8 +170,7 @@ Deno.test('for loop with different variable names (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with method calls (should trigger)', () =>
   runnerTest(
@@ -195,8 +184,7 @@ Deno.test('for loop with method calls (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with multiple conditions (should trigger)', () =>
   runnerTest(
@@ -210,8 +198,7 @@ Deno.test('for loop with multiple conditions (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with multiple returns (should trigger)', () =>
   runnerTest(
@@ -228,8 +215,7 @@ Deno.test('for loop with multiple returns (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with nested conditions (should trigger)', () =>
   runnerTest(
@@ -245,8 +231,7 @@ Deno.test('for loop with nested conditions (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with no return statement (should not trigger)', () =>
   runnerTest(
@@ -257,8 +242,7 @@ Deno.test('for loop with no return statement (should not trigger)', () =>
     }
   `,
     0
-  )
-)
+  ))
 
 Deno.test('for loop with property access (should trigger)', () =>
   runnerTest(
@@ -272,8 +256,7 @@ Deno.test('for loop with property access (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('for loop with return false (should not trigger)', () =>
   runnerTest(
@@ -287,8 +270,7 @@ Deno.test('for loop with return false (should not trigger)', () =>
     return true
   `,
     0
-  )
-)
+  ))
 
 Deno.test('for loop with return true (should trigger)', () =>
   runnerTest(
@@ -302,8 +284,7 @@ Deno.test('for loop with return true (should trigger)', () =>
     return false
   `,
     1
-  )
-)
+  ))
 
 Deno.test('verify auto-fix for complex condition', () =>
   verifyAutoFix(
@@ -318,8 +299,7 @@ Deno.test('verify auto-fix for complex condition', () =>
   `,
     'items.some(item => item.active && item.value > threshold)',
     'Complex condition auto-fix test'
-  )
-)
+  ))
 
 Deno.test('verify auto-fix for simple for loop', () =>
   verifyAutoFix(
@@ -334,8 +314,7 @@ Deno.test('verify auto-fix for simple for loop', () =>
   `,
     'arr.some(item => item > 0)',
     'Simple for loop auto-fix test'
-  )
-)
+  ))
 
 Deno.test('verify auto-fix in arrow function', () =>
   verifyAutoFix(
@@ -352,8 +331,7 @@ Deno.test('verify auto-fix in arrow function', () =>
   `,
     'users.some(user => user.active)',
     'Arrow function for loop auto-fix test'
-  )
-)
+  ))
 
 Deno.test('verify auto-fix in function', () =>
   verifyAutoFix(
@@ -370,8 +348,7 @@ Deno.test('verify auto-fix in function', () =>
   `,
     'users.some(user => user.active)',
     'Function for loop auto-fix test'
-  )
-)
+  ))
 
 Deno.test('verify auto-fix with method calls', () =>
   verifyAutoFix(
@@ -386,8 +363,7 @@ Deno.test('verify auto-fix with method calls', () =>
   `,
     'items.some(item => item.isValid())',
     'Method calls auto-fix test'
-  )
-)
+  ))
 
 Deno.test('verify auto-fix with property access', () =>
   verifyAutoFix(
@@ -402,5 +378,4 @@ Deno.test('verify auto-fix with property access', () =>
   `,
     'users.some(user => user.profile.isActive)',
     'Property access auto-fix test'
-  )
-)
+  ))

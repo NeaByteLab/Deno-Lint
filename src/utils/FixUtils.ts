@@ -1,11 +1,21 @@
 import type {
   CallExpressionNode,
   DenoASTNode,
+  ForStatementNode,
   IfStatementNode,
   LintContext,
   LintFixer
 } from '@interfaces/index.ts'
-import { escapeRegExp, isIfStatement } from '@utils/index.ts'
+import {
+  containsReturnValue,
+  escapeRegExp,
+  isBinaryExpression,
+  isBlockStatement,
+  isIdentifier,
+  isIfStatement,
+  isMemberExpression,
+  isVariableDeclaration
+} from '@utils/index.ts'
 
 /**
  * Creates a fix that adds type annotation to default parameters.
@@ -130,6 +140,55 @@ export function createAddSuffixFix(
 }
 
 /**
+ * Creates a fix that replaces for loops with array methods.
+ * @param context - The lint context
+ * @param node - The for loop node
+ * @param method - The array method to use ('every' or 'some')
+ * @returns A fix function
+ */
+export function createArrayMethodFix(
+  context: LintContext,
+  node: DenoASTNode,
+  method: 'every' | 'some'
+): (fixer: LintFixer) => unknown {
+  return (fixer: LintFixer): unknown => {
+    const forNode = node as ForStatementNode
+    const { arrayName, itemName } = extractForLoopVariables(context, forNode)
+    const body = forNode.body
+    const expectedValue = method === 'every' ? false : true
+    let callbackBody = 'item'
+    if (isBlockStatement(body)) {
+      const statements = body.body || []
+      const ifStmt = statements.find((stmt) => {
+        if (isIfStatement(stmt)) {
+          const ifNode = stmt as IfStatementNode
+          const containsReturn = containsReturnValue(ifNode.consequent, expectedValue) ||
+            (ifNode.alternate && containsReturnValue(ifNode.alternate, expectedValue))
+          return containsReturn
+        }
+        return false
+      }) as IfStatementNode
+      if (ifStmt) {
+        const conditionText = context.sourceCode.getText(ifStmt.test)
+        const paramName = arrayName.endsWith('s') ? arrayName.slice(0, -1) : 'item'
+        let normalizedCondition = conditionText.replace(
+          new RegExp(`${arrayName}\\[${itemName}\\]`, 'g'),
+          paramName
+        )
+        normalizedCondition = normalizedCondition.replace(
+          new RegExp(`\\b${itemName}\\b`, 'g'),
+          paramName
+        )
+        callbackBody = method === 'every' ? `!(${normalizedCondition})` : normalizedCondition
+      }
+    }
+    const paramName = arrayName.endsWith('s') ? arrayName.slice(0, -1) : 'item'
+    const arrayMethodCall = `${arrayName}.${method}(${paramName} => ${callbackBody})`
+    return fixer.replaceText(node, arrayMethodCall)
+  }
+}
+
+/**
  * Creates a fix function that adds const assertion to a node.
  * @param context - The lint context
  * @param node - The AST node to add const assertion to
@@ -186,19 +245,6 @@ export function createEarlyReturnFix(
     }
     return fixer.replaceText(ifStatement, earlyReturnText)
   }
-}
-
-/**
- * Negates a condition properly, handling complex expressions.
- * @param condition - The condition text to negate
- * @returns The negated condition
- */
-function negateCondition(condition: string): string {
-  const trimmed = condition.trim()
-  if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(trimmed)) {
-    return `!${trimmed}`
-  }
-  return `!(${trimmed})`
 }
 
 /**
@@ -259,4 +305,51 @@ export function createWrapInErrorFix(
     const newText = `new Error(${argText})`
     return fixer.replaceText(arg, newText)
   }
+}
+
+/**
+ * Extracts array and item names from a for loop.
+ * @param context - The lint context
+ * @param forNode - The for statement node
+ * @returns Object containing arrayName and itemName
+ */
+export function extractForLoopVariables(
+  context: LintContext,
+  forNode: ForStatementNode
+): { arrayName: string; itemName: string } {
+  let arrayName = 'arr'
+  let itemName = 'item'
+  const test = forNode.test
+  if (test && isBinaryExpression(test)) {
+    if (test.right && isMemberExpression(test.right)) {
+      const rightText = context.sourceCode.getText(test.right)
+      if (rightText.includes('.length')) {
+        arrayName = rightText.split('.')[0] || 'arr'
+      }
+    }
+  }
+  const init = forNode.init
+  if (init && isVariableDeclaration(init)) {
+    const declarations = init.declarations || []
+    if (declarations.length > 0) {
+      const declarator = declarations[0]
+      if (declarator && declarator.id && isIdentifier(declarator.id)) {
+        itemName = declarator.id.name
+      }
+    }
+  }
+  return { arrayName, itemName }
+}
+
+/**
+ * Negates a condition properly, handling complex expressions.
+ * @param condition - The condition text to negate
+ * @returns The negated condition
+ */
+function negateCondition(condition: string): string {
+  const trimmed = condition.trim()
+  if (/^[a-zA-Z_$][a-zA-Z0-9_$]*$/.test(trimmed)) {
+    return `!${trimmed}`
+  }
+  return `!(${trimmed})`
 }
