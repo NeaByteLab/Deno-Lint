@@ -1,29 +1,3 @@
-// deno-lint-ignore no-implicit-declare-namespace-export
-declare global {
-  namespace Deno {
-    namespace lint {
-      interface Plugin {
-        name: string
-        rules: Record<
-          string,
-          {
-            create(context: Context): Record<string, (node: ASTNode) => void>
-          }
-        >
-      }
-      interface Context {
-        sourceCode: {
-          getText(node: ASTNode): string
-        }
-        report(options: { node: ASTNode; message: string; fix?: (fixer: Fixer) => unknown }): void
-      }
-      interface Fixer {
-        replaceText(node: ASTNode, text: string): unknown
-      }
-    }
-  }
-}
-
 /**
  * AST node representing an arrow function expression.
  */
@@ -76,30 +50,6 @@ export interface ClassDeclarationNode {
 }
 
 /**
- * AST node representing function parameters.
- */
-export interface ParameterNode {
-  /** Type identifier for parameter nodes */
-  type: 'Identifier' | 'ObjectPattern' | 'RestElement' | 'AssignmentPattern'
-  /** Parameter name for identifier types */
-  name?: string
-  /** Type annotation for the parameter */
-  typeAnnotation?: unknown
-  /** Properties for destructured parameters */
-  properties?: Array<{
-    type: 'Property'
-    key: { name: string }
-    value: ParameterNode
-  }>
-  /** Argument for rest parameters */
-  argument?: ParameterNode
-  /** Left side for assignment pattern parameters */
-  left?: ParameterNode
-  /** Right side for assignment pattern parameters */
-  right?: unknown
-}
-
-/**
  * AST node representing a function declaration.
  */
 export interface FunctionDeclarationNode {
@@ -142,6 +92,90 @@ export interface InterfaceDeclarationNode {
 }
 
 /**
+ * Context object provided to lint rules for reporting issues and accessing source code.
+ */
+export interface LintContext {
+  /** The source code of the file */
+  sourceCode: {
+    /** Get the text of a node */
+    getText(node: ASTNode): string
+  }
+  /** Report an issue */
+  report(options: { node: ASTNode; message: string; fix?: (fixer: LintFixer) => unknown }): void
+}
+
+/**
+ * Fixer object provided to lint rules for applying automatic fixes to source code.
+ */
+export interface LintFixer {
+  /** Replace the text of a node */
+  replaceText(node: ASTNode, text: string): unknown
+}
+
+/**
+ * Plugin configuration object for Deno lint rules.
+ */
+export interface LintPlugin {
+  /** The name of the plugin */
+  name: string
+  /** The rules of the plugin */
+  rules: Record<
+    string,
+    {
+      /** Create the rule */
+      create(context: LintContext): Record<string, (node: ASTNode) => void>
+    }
+  >
+}
+
+/**
+ * AST node representing a method definition.
+ */
+export interface MethodDefinitionNode {
+  /** Type identifier for method definitions */
+  type: 'MethodDefinition'
+  /** Method key with name */
+  key: { name: string }
+  /** Method value containing function expression */
+  value: {
+    type: 'FunctionExpression'
+    /** The parameters of the function */
+    params: Array<ParameterNode>
+    /** Whether the function is async */
+    async?: boolean
+  }
+  /** Whether the method is static */
+  static?: boolean
+}
+
+/**
+ * AST node representing function parameters.
+ */
+export interface ParameterNode {
+  /** Type identifier for parameter nodes */
+  type: 'Identifier' | 'ObjectPattern' | 'RestElement' | 'AssignmentPattern'
+  /** Parameter name for identifier types */
+  name?: string
+  /** Type annotation for the parameter */
+  typeAnnotation?: unknown
+  /** Properties for destructured parameters */
+  properties?: Array<{
+    /** Type identifier for property nodes */
+    type: 'Property'
+    /** The key of the property */
+    key: { name: string }
+    /** The value of the property */
+    value: ParameterNode
+  }>
+  /** Argument for rest parameters */
+  argument?: ParameterNode
+  /** Left side for assignment pattern parameters */
+  left?: ParameterNode
+  /** Right side for assignment pattern parameters */
+  right?: unknown
+}
+
+/**
  * AST node representing a TypeScript enum declaration.
  */
 export interface TSEnumDeclarationNode {
@@ -169,24 +203,6 @@ export interface TSTypeAliasDeclarationNode {
   type: 'TSTypeAliasDeclaration'
   /** Optional type identifier with name */
   id?: { name: string }
-}
-
-/**
- * AST node representing a method definition.
- */
-export interface MethodDefinitionNode {
-  /** Type identifier for method definitions */
-  type: 'MethodDefinition'
-  /** Method key with name */
-  key: { name: string }
-  /** Method value containing function expression */
-  value: {
-    type: 'FunctionExpression'
-    params: Array<ParameterNode>
-    async?: boolean
-  }
-  /** Whether the method is static */
-  static?: boolean
 }
 
 /**

@@ -25,4 +25,4 @@ jobs:
         run: deno lint tests/ && deno test --no-check
 
       - name: Publish package
-        run: deno publish --allow-slow-types --allow-dirty
+        run: deno publish

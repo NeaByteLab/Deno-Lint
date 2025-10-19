@@ -1,4 +1,4 @@
-import type { ASTNode, ParameterNode } from '@app/types.ts'
+import type { ASTNode, LintContext, LintFixer, ParameterNode } from '@app/types.ts'
 import {
   isArrowFunctionExpression,
   isFunctionDeclaration,
@@ -13,7 +13,7 @@ import {
  * @param params - Array of parameter nodes to check
  */
 function checkParameters(
-  context: Deno.lint.Context,
+  context: LintContext,
   node: ASTNode,
   params: Array<ParameterNode>
 ): void {
@@ -28,14 +28,14 @@ function checkParameters(
  * @param node - The AST node containing the parameter
  * @param param - The parameter node to check
  */
-function checkParameter(context: Deno.lint.Context, node: ASTNode, param: ParameterNode): void {
+function checkParameter(context: LintContext, node: ASTNode, param: ParameterNode): void {
   switch (param.type) {
     case 'Identifier':
       if (!param.typeAnnotation) {
         context.report({
           node: node as ASTNode,
           message: `Parameter '${param.name}' must have explicit type annotation`,
-          fix(fixer: Deno.lint.Fixer): unknown {
+          fix(fixer: LintFixer): unknown {
             const original = context.sourceCode.getText(node as ASTNode)
             const newText = original.replace(
               new RegExp(`\\b${param.name}\\b`),
@@ -51,7 +51,7 @@ function checkParameter(context: Deno.lint.Context, node: ASTNode, param: Parame
         context.report({
           node: node as ASTNode,
           message: `Destructured parameter must have explicit type annotation`,
-          fix(fixer: Deno.lint.Fixer): unknown {
+          fix(fixer: LintFixer): unknown {
             const original = context.sourceCode.getText(node as ASTNode)
             const newText = original.replace(/\{([^}]+)\}/, '{$1}: any')
             return fixer.replaceText(node as ASTNode, newText)
@@ -64,7 +64,7 @@ function checkParameter(context: Deno.lint.Context, node: ASTNode, param: Parame
         context.report({
           node: node as ASTNode,
           message: `Rest parameter must have explicit type annotation`,
-          fix(fixer: Deno.lint.Fixer): unknown {
+          fix(fixer: LintFixer): unknown {
             const original = context.sourceCode.getText(node as ASTNode)
             const newText = original.replace(/\.\.\.(\w+)/, '...$1: any[]')
             return fixer.replaceText(node as ASTNode, newText)
@@ -78,7 +78,7 @@ function checkParameter(context: Deno.lint.Context, node: ASTNode, param: Parame
         context.report({
           node: node as ASTNode,
           message: `Default parameter must have explicit type annotation`,
-          fix(fixer: Deno.lint.Fixer): unknown {
+          fix(fixer: LintFixer): unknown {
             const original = context.sourceCode.getText(node as ASTNode)
             const newText = original.replace(/(\w+)\s*=/g, '$1: any =')
             return fixer.replaceText(node as ASTNode, newText)
@@ -99,7 +99,7 @@ export const explicitParameterTypesRule = {
    * @param context - The Deno lint context for reporting issues and fixes
    * @returns Object containing visitor functions for AST node types
    */
-  create(context: Deno.lint.Context): Record<string, (node: ASTNode) => void> {
+  create(context: LintContext): Record<string, (node: ASTNode) => void> {
     return {
       /**
        * Visitor function for function declarations.

@@ -1,4 +1,4 @@
-import type { ASTNode } from '@app/types.ts'
+import type { ASTNode, LintContext, LintFixer } from '@app/types.ts'
 import { isFunctionDeclaration } from '@shared/expression.ts'
 
 /**
@@ -10,7 +10,7 @@ export const asyncFunctionNamingRule = {
    * @param context - The Deno lint context for reporting issues and fixes
    * @returns Object containing visitor functions for AST node types
    */
-  create(context: Deno.lint.Context): Record<string, (node: ASTNode) => void> {
+  create(context: LintContext): Record<string, (node: ASTNode) => void> {
     return {
       /**
        * Visitor function for function declarations.
@@ -25,7 +25,7 @@ export const asyncFunctionNamingRule = {
           context.report({
             node,
             message: "Async functions should be named with 'Async' suffix",
-            fix(fixer: Deno.lint.Fixer): unknown {
+            fix(fixer: LintFixer): unknown {
               const original = context.sourceCode.getText(node)
               const newName = `${nodeId.name}Async`
               const newText = original.replace(

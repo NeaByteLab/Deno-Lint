@@ -1,3 +1,4 @@
+import type { LintPlugin } from '@app/types.ts'
 import { asyncFunctionNamingRule } from '@rules/async-function-naming.ts'
 import { explicitParameterTypesRule } from '@rules/explicit-parameter-types.ts'
 import { explicitReturnTypesRule } from '@rules/explicit-return-types.ts'
@@ -6,7 +7,7 @@ import { requireErrorHandlingRule } from '@rules/require-error-handling.ts'
 /**
  * Deno lint plugin containing custom linting rules.
  */
-const plugin: Deno.lint.Plugin = {
+const plugin: LintPlugin = {
   name: 'deno-lint',
   rules: {
     'async-function-naming': asyncFunctionNamingRule,

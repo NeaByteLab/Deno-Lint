@@ -1,4 +1,4 @@
-import type { ASTNode, AwaitExpressionNode } from '@app/types.ts'
+import type { ASTNode, AwaitExpressionNode, LintContext } from '@app/types.ts'
 import { isCallExpression } from '@shared/expression.ts'
 
 /**
@@ -32,7 +32,7 @@ export const requireErrorHandlingRule = {
    * @param context - The Deno lint context for reporting issues and fixes
    * @returns Object containing visitor functions for AST node types
    */
-  create(context: Deno.lint.Context): Record<string, (node: ASTNode) => void> {
+  create(context: LintContext): Record<string, (node: ASTNode) => void> {
     return {
       /**
        * Visitor function for call expressions.
