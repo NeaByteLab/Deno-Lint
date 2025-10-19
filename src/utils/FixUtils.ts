@@ -125,13 +125,11 @@ export function createAddSuffixFix(
 
 /**
  * Creates a fix that converts logical AND to optional chaining.
- * @param _context - The lint context
  * @param node - The logical expression node
  * @param convertedText - The converted text
  * @returns A fix function
  */
 export function createOptionalChainingFix(
-  _context: LintContext,
   node: DenoASTNode,
   convertedText: string
 ): (fixer: LintFixer) => unknown {

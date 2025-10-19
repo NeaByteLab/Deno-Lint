@@ -257,8 +257,22 @@ export interface LintContext {
  * Fixer object provided to lint rules for applying automatic fixes to source code.
  */
 export interface LintFixer {
+  /** Insert text after the given node */
+  insertTextAfter(node: ASTNode, text: string): unknown
+  /** Insert text after the given range */
+  insertTextAfterRange(range: [number, number], text: string): unknown
+  /** Insert text before the given node */
+  insertTextBefore(node: ASTNode, text: string): unknown
+  /** Insert text before the given range */
+  insertTextBeforeRange(range: [number, number], text: string): unknown
+  /** Remove the given node */
+  remove(node: ASTNode): unknown
+  /** Remove text in the given range */
+  removeRange(range: [number, number]): unknown
   /** Replace the text of a node */
   replaceText(node: ASTNode, text: string): unknown
+  /** Replace text in the given range */
+  replaceTextRange(range: [number, number], text: string): unknown
 }
 
 /**

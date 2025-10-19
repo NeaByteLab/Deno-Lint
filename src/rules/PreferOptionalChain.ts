@@ -31,7 +31,7 @@ export const preferOptionalChainRule = {
             context.report({
               node,
               message: 'Prefer optional chaining (?.) over logical AND (&&) for property access.',
-              fix: createOptionalChainingFix(context, node, convertedText)
+              fix: createOptionalChainingFix(node, convertedText)
             })
           }
         }
