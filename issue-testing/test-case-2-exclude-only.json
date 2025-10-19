@@ -1,0 +1,13 @@
+{
+  "links": [".."],
+  "lint": {
+    "plugins": ["jsr:@neabyte/deno-lint@0.1.0"],
+    "rules": {
+      "exclude": [
+        "deno-lint/explicit-parameter-types",
+        "deno-lint/require-error-handling",
+        "deno-lint/explicit-return-types"
+      ]
+    }
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "links": [".."],
+  "lint": {
+    "plugins": ["jsr:@neabyte/deno-lint@0.1.0"],
+    "rules": {
+      "include": ["deno-lint/async-function-naming"],
+      "exclude": ["deno-lint/explicit-parameter-types", "deno-lint/require-error-handling"]
+    }
+  }
+}
