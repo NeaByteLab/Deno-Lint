@@ -1,291 +1,152 @@
-import type {
-  ArrayExpressionNode,
-  ArrowFunctionExpressionNode,
-  AssignmentExpressionNode,
-  AssignmentPatternNode,
-  AwaitExpressionNode,
-  BigIntLiteralNode,
-  BinaryExpressionNode,
-  BlockStatementNode,
-  BreakStatementNode,
-  CallExpressionNode,
-  CatchClauseNode,
-  ChainExpressionNode,
-  ClassBodyNode,
-  ClassDeclarationNode,
-  ClassExpressionNode,
-  ClassFieldNode,
-  ClassMethodNode,
-  ConditionalExpressionNode,
-  DebuggerStatementNode,
-  DecoratorNode,
-  DoWhileStatementNode,
-  EmptyStatementNode,
-  ExportAllDeclarationNode,
-  ExportDefaultDeclarationNode,
-  ExportNamedDeclarationNode,
-  ExportSpecifierNode,
-  ExpressionStatementNode,
-  ForInStatementNode,
-  ForOfStatementNode,
-  ForStatementNode,
-  FunctionDeclarationNode,
-  FunctionExpressionNode,
-  HashbangNode,
-  IdentifierNode,
-  IfStatementNode,
-  ImportAssertionNode,
-  ImportAttributeNode,
-  ImportDeclarationNode,
-  ImportDefaultSpecifierNode,
-  ImportExpressionNode,
-  ImportNamespaceSpecifierNode,
-  ImportSpecifierNode,
-  LabeledStatementNode,
-  LiteralNode,
-  LogicalAssignmentNode,
-  LogicalExpressionNode,
-  MemberExpressionNode,
-  MetaPropertyNode,
-  MethodDefinitionNode,
-  NewExpressionNode,
-  NullishCoalescingNode,
-  NumericSeparatorNode,
-  ObjectExpressionNode,
-  ObjectPatternNode,
-  OptionalChainingNode,
-  ParameterNode,
-  PipelineOperatorNode,
-  PrivateIdentifierNode,
-  ProgramNode,
-  PropertyDefinitionNode,
-  PropertyNode,
-  RegExpLiteralNode,
-  RegExpWithIndicesNode,
-  RestElementNode,
-  ReturnStatementNode,
-  SequenceExpressionNode,
-  SpreadElementNode,
-  StaticBlockNode,
-  SuperNode,
-  SwitchCaseNode,
-  SwitchStatementNode,
-  TemplateElementNode,
-  TemplateLiteralNode,
-  ThisExpressionNode,
-  ThrowStatementNode,
-  TopLevelAwaitNode,
-  TryStatementNode,
-  TSAnyKeywordNode,
-  TSArrayTypeNode,
-  TSAsExpressionNode,
-  TSBooleanKeywordNode,
-  TSCallSignatureDeclarationNode,
-  TSConditionalTypeNode,
-  TSConstructSignatureDeclarationNode,
-  TSDeclareFunctionNode,
-  TSEnumBodyNode,
-  TSEnumDeclarationNode,
-  TSEnumMemberNode,
-  TSExpressionWithTypeArgumentsNode,
-  TSFunctionTypeNode,
-  TSIndexedAccessTypeNode,
-  TSIndexSignatureNode,
-  TSInferTypeNode,
-  TSInterfaceBodyNode,
-  TSInterfaceDeclarationNode,
-  TSInterfaceHeritageNode,
-  TSIntersectionTypeNode,
-  TSLiteralTypeNode,
-  TSMappedTypeNode,
-  TSMethodSignatureNode,
-  TSModuleBlockNode,
-  TSModuleDeclarationNode,
-  TSNamedTupleMemberNode,
-  TSNeverKeywordNode,
-  TSNullKeywordNode,
-  TSNumberKeywordNode,
-  TSObjectKeywordNode,
-  TSOptionalTypeNode,
-  TSPropertySignatureNode,
-  TSQualifiedNameNode,
-  TSRestTypeNode,
-  TSStringKeywordNode,
-  TSSymbolKeywordNode,
-  TSTemplateElementTypeNode,
-  TSTemplateLiteralTypeNode,
-  TSTupleTypeNode,
-  TSTypeAliasDeclarationNode,
-  TSTypeAnnotationNode,
-  TSTypeLiteralNode,
-  TSTypeNameNode,
-  TSTypeOperatorNode,
-  TSTypeParameterDeclarationNode,
-  TSTypeParameterInstantiationNode,
-  TSTypeParameterNode,
-  TSTypePredicateNode,
-  TSTypeQueryNode,
-  TSTypeReferenceNode,
-  TSUndefinedKeywordNode,
-  TSUnionTypeNode,
-  TSUnknownKeywordNode,
-  TSVoidKeywordNode,
-  UnaryExpressionNode,
-  UpdateExpressionNode,
-  VariableDeclarationNode,
-  VariableDeclaratorNode,
-  WhileStatementNode,
-  WithStatementNode,
-  YieldExpressionNode
-} from '@interfaces/index.ts'
+import type * as types from '@interfaces/index.ts'
 
 /**
  * Union type of all supported JavaScript AST node types.
  */
 export type JSASTNode =
-  | ArrayExpressionNode
-  | ArrowFunctionExpressionNode
-  | AssignmentExpressionNode
-  | AssignmentPatternNode
-  | AwaitExpressionNode
-  | BigIntLiteralNode
-  | BinaryExpressionNode
-  | BlockStatementNode
-  | BreakStatementNode
-  | CallExpressionNode
-  | CatchClauseNode
-  | ChainExpressionNode
-  | ClassBodyNode
-  | ClassDeclarationNode
-  | ClassExpressionNode
-  | ClassFieldNode
-  | ClassMethodNode
-  | ConditionalExpressionNode
-  | DebuggerStatementNode
-  | DecoratorNode
-  | DoWhileStatementNode
-  | EmptyStatementNode
-  | ExportAllDeclarationNode
-  | ExportDefaultDeclarationNode
-  | ExportNamedDeclarationNode
-  | ExportSpecifierNode
-  | ExpressionStatementNode
-  | ForInStatementNode
-  | ForOfStatementNode
-  | ForStatementNode
-  | FunctionDeclarationNode
-  | FunctionExpressionNode
-  | HashbangNode
-  | IdentifierNode
-  | IfStatementNode
-  | ImportAssertionNode
-  | ImportAttributeNode
-  | ImportDeclarationNode
-  | ImportDefaultSpecifierNode
-  | ImportExpressionNode
-  | ImportNamespaceSpecifierNode
-  | ImportSpecifierNode
-  | LabeledStatementNode
-  | LiteralNode
-  | LogicalAssignmentNode
-  | LogicalExpressionNode
-  | MemberExpressionNode
-  | MetaPropertyNode
-  | MethodDefinitionNode
-  | NewExpressionNode
-  | NullishCoalescingNode
-  | NumericSeparatorNode
-  | ObjectExpressionNode
-  | ObjectPatternNode
-  | OptionalChainingNode
-  | ParameterNode
-  | PipelineOperatorNode
-  | PrivateIdentifierNode
-  | ProgramNode
-  | PropertyNode
-  | PropertyDefinitionNode
-  | RegExpLiteralNode
-  | RegExpWithIndicesNode
-  | RestElementNode
-  | ReturnStatementNode
-  | SequenceExpressionNode
-  | SpreadElementNode
-  | StaticBlockNode
-  | SuperNode
-  | SwitchCaseNode
-  | SwitchStatementNode
-  | TemplateElementNode
-  | TemplateLiteralNode
-  | ThisExpressionNode
-  | ThrowStatementNode
-  | TopLevelAwaitNode
-  | TryStatementNode
-  | UnaryExpressionNode
-  | UpdateExpressionNode
-  | VariableDeclarationNode
-  | VariableDeclaratorNode
-  | WhileStatementNode
-  | WithStatementNode
-  | YieldExpressionNode
+  | types.ArrayExpressionNode
+  | types.ArrowFunctionExpressionNode
+  | types.AssignmentExpressionNode
+  | types.AssignmentPatternNode
+  | types.AwaitExpressionNode
+  | types.BigIntLiteralNode
+  | types.BinaryExpressionNode
+  | types.BlockStatementNode
+  | types.BreakStatementNode
+  | types.CallExpressionNode
+  | types.CatchClauseNode
+  | types.ChainExpressionNode
+  | types.ClassBodyNode
+  | types.ClassDeclarationNode
+  | types.ClassExpressionNode
+  | types.ClassFieldNode
+  | types.ClassMethodNode
+  | types.ConditionalExpressionNode
+  | types.DebuggerStatementNode
+  | types.DecoratorNode
+  | types.DoWhileStatementNode
+  | types.EmptyStatementNode
+  | types.ExportAllDeclarationNode
+  | types.ExportDefaultDeclarationNode
+  | types.ExportNamedDeclarationNode
+  | types.ExportSpecifierNode
+  | types.ExpressionStatementNode
+  | types.ForInStatementNode
+  | types.ForOfStatementNode
+  | types.ForStatementNode
+  | types.FunctionDeclarationNode
+  | types.FunctionExpressionNode
+  | types.HashbangNode
+  | types.IdentifierNode
+  | types.IfStatementNode
+  | types.ImportAssertionNode
+  | types.ImportAttributeNode
+  | types.ImportDeclarationNode
+  | types.ImportDefaultSpecifierNode
+  | types.ImportExpressionNode
+  | types.ImportNamespaceSpecifierNode
+  | types.ImportSpecifierNode
+  | types.LabeledStatementNode
+  | types.LiteralNode
+  | types.LogicalAssignmentNode
+  | types.LogicalExpressionNode
+  | types.MemberExpressionNode
+  | types.MetaPropertyNode
+  | types.MethodDefinitionNode
+  | types.NewExpressionNode
+  | types.NullishCoalescingNode
+  | types.NumericSeparatorNode
+  | types.ObjectExpressionNode
+  | types.ObjectPatternNode
+  | types.OptionalChainingNode
+  | types.ParameterNode
+  | types.PipelineOperatorNode
+  | types.PrivateIdentifierNode
+  | types.ProgramNode
+  | types.PropertyNode
+  | types.PropertyDefinitionNode
+  | types.RegExpLiteralNode
+  | types.RegExpWithIndicesNode
+  | types.RestElementNode
+  | types.ReturnStatementNode
+  | types.SequenceExpressionNode
+  | types.SpreadElementNode
+  | types.StaticBlockNode
+  | types.SuperNode
+  | types.SwitchCaseNode
+  | types.SwitchStatementNode
+  | types.TemplateElementNode
+  | types.TemplateLiteralNode
+  | types.ThisExpressionNode
+  | types.ThrowStatementNode
+  | types.TopLevelAwaitNode
+  | types.TryStatementNode
+  | types.UnaryExpressionNode
+  | types.UpdateExpressionNode
+  | types.VariableDeclarationNode
+  | types.VariableDeclaratorNode
+  | types.WhileStatementNode
+  | types.WithStatementNode
+  | types.YieldExpressionNode
 
 /**
  * Union type of all supported TypeScript AST node types.
  */
 export type TSASTNode =
-  | TSAnyKeywordNode
-  | TSArrayTypeNode
-  | TSAsExpressionNode
-  | TSBooleanKeywordNode
-  | TSCallSignatureDeclarationNode
-  | TSConditionalTypeNode
-  | TSConstructSignatureDeclarationNode
-  | TSDeclareFunctionNode
-  | TSEnumBodyNode
-  | TSEnumDeclarationNode
-  | TSEnumMemberNode
-  | TSExpressionWithTypeArgumentsNode
-  | TSFunctionTypeNode
-  | TSIndexedAccessTypeNode
-  | TSIndexSignatureNode
-  | TSInferTypeNode
-  | TSInterfaceBodyNode
-  | TSInterfaceDeclarationNode
-  | TSInterfaceHeritageNode
-  | TSIntersectionTypeNode
-  | TSLiteralTypeNode
-  | TSMappedTypeNode
-  | TSMethodSignatureNode
-  | TSModuleBlockNode
-  | TSModuleDeclarationNode
-  | TSNamedTupleMemberNode
-  | TSNeverKeywordNode
-  | TSNullKeywordNode
-  | TSNumberKeywordNode
-  | TSObjectKeywordNode
-  | TSOptionalTypeNode
-  | TSPropertySignatureNode
-  | TSQualifiedNameNode
-  | TSRestTypeNode
-  | TSStringKeywordNode
-  | TSSymbolKeywordNode
-  | TSTemplateElementTypeNode
-  | TSTemplateLiteralTypeNode
-  | TSTupleTypeNode
-  | TSTypeAliasDeclarationNode
-  | TSTypeAnnotationNode
-  | TSTypeLiteralNode
-  | TSTypeNameNode
-  | TSTypeOperatorNode
-  | TSTypeParameterDeclarationNode
-  | TSTypeParameterInstantiationNode
-  | TSTypeParameterNode
-  | TSTypePredicateNode
-  | TSTypeQueryNode
-  | TSTypeReferenceNode
-  | TSUndefinedKeywordNode
-  | TSUnionTypeNode
-  | TSUnknownKeywordNode
-  | TSVoidKeywordNode
+  | types.TSAnyKeywordNode
+  | types.TSArrayTypeNode
+  | types.TSAsExpressionNode
+  | types.TSBooleanKeywordNode
+  | types.TSCallSignatureDeclarationNode
+  | types.TSConditionalTypeNode
+  | types.TSConstructSignatureDeclarationNode
+  | types.TSDeclareFunctionNode
+  | types.TSEnumBodyNode
+  | types.TSEnumDeclarationNode
+  | types.TSEnumMemberNode
+  | types.TSExpressionWithTypeArgumentsNode
+  | types.TSFunctionTypeNode
+  | types.TSIndexedAccessTypeNode
+  | types.TSIndexSignatureNode
+  | types.TSInferTypeNode
+  | types.TSInterfaceBodyNode
+  | types.TSInterfaceDeclarationNode
+  | types.TSInterfaceHeritageNode
+  | types.TSIntersectionTypeNode
+  | types.TSLiteralTypeNode
+  | types.TSMappedTypeNode
+  | types.TSMethodSignatureNode
+  | types.TSModuleBlockNode
+  | types.TSModuleDeclarationNode
+  | types.TSNamedTupleMemberNode
+  | types.TSNeverKeywordNode
+  | types.TSNullKeywordNode
+  | types.TSNumberKeywordNode
+  | types.TSObjectKeywordNode
+  | types.TSOptionalTypeNode
+  | types.TSPropertySignatureNode
+  | types.TSQualifiedNameNode
+  | types.TSRestTypeNode
+  | types.TSStringKeywordNode
+  | types.TSSymbolKeywordNode
+  | types.TSTemplateElementTypeNode
+  | types.TSTemplateLiteralTypeNode
+  | types.TSTupleTypeNode
+  | types.TSTypeAliasDeclarationNode
+  | types.TSTypeAnnotationNode
+  | types.TSTypeLiteralNode
+  | types.TSTypeNameNode
+  | types.TSTypeOperatorNode
+  | types.TSTypeParameterDeclarationNode
+  | types.TSTypeParameterInstantiationNode
+  | types.TSTypeParameterNode
+  | types.TSTypePredicateNode
+  | types.TSTypeQueryNode
+  | types.TSTypeReferenceNode
+  | types.TSUndefinedKeywordNode
+  | types.TSUnionTypeNode
+  | types.TSUnknownKeywordNode
+  | types.TSVoidKeywordNode
 
 /**
  * Union type of all supported AST node types (JavaScript and TypeScript).
