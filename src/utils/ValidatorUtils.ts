@@ -5,7 +5,10 @@ import type {
   LintContext,
   LogicalExpressionNode,
   MemberExpressionNode,
-  ParameterNode
+  ParameterNode,
+  TSAsExpressionNode,
+  TSTypeNameNode,
+  TSTypeReferenceNode
 } from '@interfaces/index.ts'
 import { isLiteral, isLogicalExpression } from '@utils/index.ts'
 import { isDenoApiCall, isErrorConstructor, isPromiseReject } from '@utils/index.ts'
@@ -99,6 +102,32 @@ export function followsAsyncNamingConvention(node: DenoASTNode, suffix = 'Async'
 }
 
 /**
+ * Checks if a node already has a const assertion.
+ * @param node - The AST node to check
+ * @returns True if the node has a const assertion, false otherwise
+ */
+export function hasConstAssertion(node: DenoASTNode): boolean {
+  const parent = (node as DenoASTNode).parent
+  if (!parent || parent.type !== 'TSAsExpression') {
+    return false
+  }
+  const tsAsNode = parent as TSAsExpressionNode
+  if (tsAsNode.typeAnnotation.type !== 'TSTypeReference') {
+    return false
+  }
+  const typeRef = tsAsNode.typeAnnotation as TSTypeReferenceNode
+  if (typeRef.typeName.type !== 'TSTypeName') {
+    return false
+  }
+  const typeName = typeRef.typeName as TSTypeNameNode
+  if (typeName.name.type !== 'Identifier') {
+    return false
+  }
+  const identifier = typeName.name as IdentifierNode
+  return identifier.name === 'const'
+}
+
+/**
  * Checks if all parameters in a function have explicit type annotations.
  * @param node - The function node
  * @returns True if all parameters have type annotations, false otherwise
@@ -131,6 +160,26 @@ export function hasExplicitParameterTypes(node: DenoASTNode): boolean {
  */
 export function hasExplicitReturnType(node: DenoASTNode): boolean {
   return (node as { returnType?: string }).returnType !== undefined
+}
+
+/**
+ * Checks if a node is a top-level expression (not nested in other arrays/objects).
+ * @param node - The AST node to check
+ * @returns True if the node is top-level, false otherwise
+ */
+export function isTopLevelExpression(node: DenoASTNode): boolean {
+  const parent = (node as DenoASTNode).parent
+  if (!parent) {
+    return true
+  }
+  return (
+    parent.type === 'VariableDeclarator' ||
+    parent.type === 'FunctionDeclaration' ||
+    parent.type === 'ArrowFunctionExpression' ||
+    parent.type === 'FunctionExpression' ||
+    parent.type === 'ReturnStatement' ||
+    parent.type === 'AssignmentExpression'
+  )
 }
 
 /**

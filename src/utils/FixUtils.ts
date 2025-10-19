@@ -162,6 +162,22 @@ export function createReplaceOperatorFix(
 }
 
 /**
+ * Creates a fix function that adds const assertion to a node.
+ * @param context - The lint context
+ * @param node - The AST node to add const assertion to
+ * @returns A fix function that adds 'as const' to the node
+ */
+export function createConstAssertionFix(
+  context: LintContext,
+  node: DenoASTNode
+): (fixer: LintFixer) => unknown {
+  return (fixer: LintFixer): unknown => {
+    const sourceText = context.sourceCode.getText(node)
+    return fixer.replaceText(node, `${sourceText} as const`)
+  }
+}
+
+/**
  * Creates a fix that wraps an argument in a new Error constructor.
  * @param context - The lint context
  * @param node - The call expression node

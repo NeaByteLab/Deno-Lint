@@ -8,7 +8,6 @@ import {
 
 /**
  * Lint rule for enforcing the use of optional chaining (?.) over logical AND (&&) for property access.
- * Refactored to use centralized utilities.
  */
 export const preferOptionalChainRule = {
   /**

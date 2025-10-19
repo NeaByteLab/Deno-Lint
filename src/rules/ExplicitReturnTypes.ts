@@ -8,7 +8,6 @@ import {
 
 /**
  * Lint rule for enforcing explicit return type annotations.
- * Refactored to use centralized utilities.
  */
 export const explicitReturnTypesRule = {
   /**

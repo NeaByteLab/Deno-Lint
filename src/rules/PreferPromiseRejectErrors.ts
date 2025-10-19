@@ -8,7 +8,6 @@ import {
 
 /**
  * Lint rule for preferring Error objects in Promise.reject() calls.
- * Refactored to use centralized utilities.
  */
 export const preferPromiseRejectErrorsRule = {
   /**

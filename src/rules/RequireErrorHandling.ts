@@ -3,7 +3,6 @@ import { isAwaited, isCallExpression, isDenoApiCall, requiresErrorHandling } fro
 
 /**
  * Lint rule for enforcing error handling on Deno file operations.
- * Refactored to use centralized utilities.
  */
 export const requireErrorHandlingRule = {
   /**

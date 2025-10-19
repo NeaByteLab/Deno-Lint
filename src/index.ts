@@ -2,6 +2,7 @@ import type { LintPlugin } from '@interfaces/index.ts'
 import { asyncFunctionNamingRule } from '@rules/AsyncFunctionNaming.ts'
 import { explicitParameterTypesRule } from '@rules/ExplicitParameterTypes.ts'
 import { explicitReturnTypesRule } from '@rules/ExplicitReturnTypes.ts'
+import { preferConstAssertionsRule } from '@rules/PreferConstAssertions.ts'
 import { preferNullishCoalescingRule } from '@rules/PreferNullishCoalescing.ts'
 import { preferOptionalChainRule } from '@rules/PreferOptionalChain.ts'
 import { preferPromiseRejectErrorsRule } from '@rules/PreferPromiseRejectErrors.ts'
@@ -16,6 +17,7 @@ const plugin: LintPlugin = {
     'async-function-naming': asyncFunctionNamingRule,
     'explicit-parameter-types': explicitParameterTypesRule,
     'explicit-return-types': explicitReturnTypesRule,
+    'prefer-const-assertions': preferConstAssertionsRule,
     'prefer-nullish-coalescing': preferNullishCoalescingRule,
     'prefer-optional-chain': preferOptionalChainRule,
     'prefer-promise-reject-errors': preferPromiseRejectErrorsRule,

@@ -67,7 +67,6 @@ function getFixFunction(
 
 /**
  * Lint rule for enforcing explicit parameter type annotations.
- * Refactored to use centralized utilities.
  */
 export const explicitParameterTypesRule = {
   /**

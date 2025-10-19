@@ -7,7 +7,6 @@ import {
 
 /**
  * Lint rule for preferring nullish coalescing over logical OR.
- * Refactored to use centralized utilities.
  */
 export const preferNullishCoalescingRule = {
   /**

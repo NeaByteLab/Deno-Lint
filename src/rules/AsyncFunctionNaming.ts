@@ -8,7 +8,6 @@ import {
 
 /**
  * Lint rule for enforcing async function naming conventions.
- * Refactored to use centralized utilities.
  */
 export const asyncFunctionNamingRule = {
   /**
