@@ -9,6 +9,7 @@ Deno lint plugin collection for identifying and reporting on patterns found in c
 - [`explicit-return-types`](./examples/explicit-return-types.md) - Requires explicit return type annotations
 - [`prefer-nullish-coalescing`](./examples/prefer-nullish-coalescing.md) - Prefers nullish coalescing (??) over logical OR (||) for null/undefined checks
 - [`prefer-optional-chain`](./examples/prefer-optional-chain.md) - Prefers optional chaining (?.) over logical AND (&&) for property access
+- [`prefer-promise-reject-errors`](./examples/prefer-promise-reject-errors.md) - Enforces Error objects in Promise.reject() calls
 - [`require-error-handling`](./examples/require-error-handling.md) - Ensures Deno file operations are properly awaited
 
 ## Installation

@@ -4,6 +4,7 @@ import { explicitParameterTypesRule } from '@rules/explicit-parameter-types.ts'
 import { explicitReturnTypesRule } from '@rules/explicit-return-types.ts'
 import { preferNullishCoalescingRule } from '@rules/prefer-nullish-coalescing.ts'
 import { preferOptionalChainRule } from '@rules/prefer-optional-chain.ts'
+import { preferPromiseRejectErrorsRule } from '@rules/prefer-promise-reject-errors.ts'
 import { requireErrorHandlingRule } from '@rules/require-error-handling.ts'
 
 /**
@@ -17,6 +18,7 @@ const plugin: LintPlugin = {
     'explicit-return-types': explicitReturnTypesRule,
     'prefer-nullish-coalescing': preferNullishCoalescingRule,
     'prefer-optional-chain': preferOptionalChainRule,
+    'prefer-promise-reject-errors': preferPromiseRejectErrorsRule,
     'require-error-handling': requireErrorHandlingRule
   }
 }

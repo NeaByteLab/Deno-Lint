@@ -8,7 +8,8 @@ import type {
   LiteralNode,
   LogicalExpressionNode,
   MemberExpressionNode,
-  MethodDefinitionNode
+  MethodDefinitionNode,
+  NewExpressionNode
 } from '@app/types.ts'
 
 /**
@@ -90,4 +91,13 @@ export function isMemberExpression(node: ASTNode): node is MemberExpressionNode 
  */
 export function isMethodDefinition(node: ASTNode): node is MethodDefinitionNode {
   return node.type === 'MethodDefinition'
+}
+
+/**
+ * Type guard to check if a node is a new expression.
+ * @param node - The AST node to check
+ * @returns True if the node is a new expression, false otherwise
+ */
+export function isNewExpression(node: ASTNode): node is NewExpressionNode {
+  return node.type === 'NewExpression'
 }

@@ -35,6 +35,8 @@ export interface CallExpressionNode {
     /** Property/method name being called */
     property: { type: 'Identifier'; name: string }
   }
+  /** Array of arguments passed to the function */
+  arguments: Array<ASTNode>
   /** Optional parent node reference */
   parent?: unknown
 }
@@ -213,6 +215,23 @@ export interface MethodDefinitionNode {
 }
 
 /**
+ * AST node representing a new expression (new Constructor()).
+ */
+export interface NewExpressionNode {
+  /** Type identifier for new expressions */
+  type: 'NewExpression'
+  /** The constructor being called */
+  callee: {
+    /** Type identifier for identifiers */
+    type: 'Identifier'
+    /** The name of the constructor */
+    name: string
+  }
+  /** Array of arguments passed to the constructor */
+  arguments: Array<ASTNode>
+}
+
+/**
  * AST node representing function parameters.
  */
 export interface ParameterNode {
@@ -299,6 +318,7 @@ export type ASTNode =
   | LogicalExpressionNode
   | MemberExpressionNode
   | MethodDefinitionNode
+  | NewExpressionNode
   | ParameterNode
   | TSEnumDeclarationNode
   | TSEnumMemberNode
