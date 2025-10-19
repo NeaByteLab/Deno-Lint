@@ -29,7 +29,6 @@ function checkParameters(
       const message = paramName
         ? `Parameter '${paramName}' must have explicit type annotation`
         : 'Parameter must have explicit type annotation'
-
       context.report({
         node,
         message,
@@ -52,14 +51,14 @@ function getFixFunction(
   param: ParameterNode
 ): (fixer: LintFixer) => unknown {
   switch (param.type) {
+    case 'AssignmentPattern':
+      return createAddDefaultTypeFix(context, node)
     case 'Identifier':
       return createAddParameterTypeFix(context, node, param.name || 'param')
     case 'ObjectPattern':
       return createAddDestructuredTypeFix(context, node)
     case 'RestElement':
       return createAddRestTypeFix(context, node)
-    case 'AssignmentPattern':
-      return createAddDefaultTypeFix(context, node)
     default:
       return createAddParameterTypeFix(context, node, 'param')
   }
@@ -77,21 +76,21 @@ export const explicitParameterTypesRule = {
   create(context: LintContext): Record<string, (node: DenoASTNode) => void> {
     return {
       /**
-       * Visitor function for function declarations.
-       * @param node - The AST node representing a function declaration
-       */
-      FunctionDeclaration(node: DenoASTNode): void {
-        if (!isFunctionDeclaration(node)) {
-          return
-        }
-        checkParameters(context, node, node.params)
-      },
-      /**
        * Visitor function for arrow function expressions.
        * @param node - The AST node representing an arrow function expression
        */
       ArrowFunctionExpression(node: DenoASTNode): void {
         if (!isArrowFunctionExpression(node)) {
+          return
+        }
+        checkParameters(context, node, node.params)
+      },
+      /**
+       * Visitor function for function declarations.
+       * @param node - The AST node representing a function declaration
+       */
+      FunctionDeclaration(node: DenoASTNode): void {
+        if (!isFunctionDeclaration(node)) {
           return
         }
         checkParameters(context, node, node.params)

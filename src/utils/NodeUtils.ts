@@ -5,11 +5,18 @@ import type {
   FunctionDeclarationNode,
   FunctionExpressionNode,
   IdentifierNode,
+  LiteralNode,
   MemberExpressionNode,
   MethodDefinitionNode,
   ParameterNode
 } from '@interfaces/index.ts'
-import { isCallExpression, isNewExpression } from '@utils/index.ts'
+import {
+  isBinaryExpression,
+  isCallExpression,
+  isLiteral,
+  isNewExpression,
+  KNOWN_ERROR_CLASSES
+} from '@utils/index.ts'
 
 /**
  * Gets the method name from a Deno API call.
@@ -163,20 +170,9 @@ export function isErrorConstructor(node: DenoASTNode): boolean {
   if (!isNewExpression(node)) {
     return false
   }
-  const knownErrorClasses = [
-    'Error',
-    'AssertionError',
-    'RangeError',
-    'ReferenceError',
-    'SyntaxError',
-    'SystemError',
-    'TypeError',
-    'EvalError',
-    'URIError'
-  ]
   return (
     node.callee.type === 'Identifier' &&
-    (knownErrorClasses.includes(node.callee.name) || node.callee.name.endsWith('Error'))
+    (KNOWN_ERROR_CLASSES.includes(node.callee.name) || node.callee.name.endsWith('Error'))
   )
 }
 
@@ -196,4 +192,25 @@ export function isPromiseReject(node: DenoASTNode): boolean {
     node.callee.property.type === 'Identifier' &&
     node.callee.property.name === 'reject'
   )
+}
+
+/**
+ * Checks if a binary expression is string concatenation.
+ * @param node - The binary expression node
+ * @returns True if the expression is string concatenation, false otherwise
+ */
+export function isStringConcatenation(node: DenoASTNode): boolean {
+  if (!isBinaryExpression(node)) {
+    return false
+  }
+  return node.operator === '+'
+}
+
+/**
+ * Checks if a node is a string literal.
+ * @param node - The AST node to check
+ * @returns True if the node is a string literal, false otherwise
+ */
+export function isStringLiteral(node: DenoASTNode): boolean {
+  return isLiteral(node) && typeof (node as LiteralNode).value === 'string'
 }

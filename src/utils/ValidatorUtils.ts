@@ -17,36 +17,36 @@ import { isDenoApiCall, isErrorConstructor, isPromiseReject } from '@utils/index
  * Array of Deno file operations that require error handling.
  */
 export const DENO_FILE_OPERATIONS = [
-  'readTextFile',
-  'writeTextFile',
-  'readFile',
-  'writeFile',
-  'copyFile',
-  'copy',
-  'remove',
-  'readDir',
-  'readLink',
-  'mkdir',
   'chmod',
   'chown',
-  'stat',
+  'copy',
+  'copyFile',
   'lstat',
+  'mkdir',
+  'readDir',
+  'readFile',
+  'readLink',
+  'readTextFile',
   'realPath',
-  'symlink'
+  'remove',
+  'stat',
+  'symlink',
+  'writeFile',
+  'writeTextFile'
 ]
 
 /**
  * Array of known error classes.
  */
 export const KNOWN_ERROR_CLASSES = [
-  'Error',
   'AssertionError',
+  'Error',
+  'EvalError',
   'RangeError',
   'ReferenceError',
   'SyntaxError',
   'SystemError',
   'TypeError',
-  'EvalError',
   'URIError'
 ]
 

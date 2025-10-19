@@ -6,6 +6,7 @@ import { preferConstAssertionsRule } from '@rules/PreferConstAssertions.ts'
 import { preferNullishCoalescingRule } from '@rules/PreferNullishCoalescing.ts'
 import { preferOptionalChainRule } from '@rules/PreferOptionalChain.ts'
 import { preferPromiseRejectErrorsRule } from '@rules/PreferPromiseRejectErrors.ts'
+import { preferTemplateLiteralsRule } from '@rules/PreferTemplateLiterals.ts'
 import { requireErrorHandlingRule } from '@rules/RequireErrorHandling.ts'
 
 /**
@@ -20,6 +21,7 @@ const plugin: LintPlugin = {
     'prefer-const-assertions': preferConstAssertionsRule,
     'prefer-nullish-coalescing': preferNullishCoalescingRule,
     'prefer-optional-chain': preferOptionalChainRule,
+    'prefer-template-literals': preferTemplateLiteralsRule,
     'prefer-promise-reject-errors': preferPromiseRejectErrorsRule,
     'require-error-handling': requireErrorHandlingRule
   }
