@@ -1,10 +1,10 @@
 {
   "name": "@neabyte/deno-lint",
   "description": "Deno lint plugin collection for identifying and reporting on patterns found in code",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "type": "module",
   "license": "MIT",
-  "exports": "./src/mod.ts",
+  "exports": "./src/index.ts",
   "compilerOptions": {
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
@@ -83,8 +83,9 @@
   "imports": {
     "@std/assert": "jsr:@std/assert@^1.0.15",
     "@app/": "./src/",
-    "@shared/": "./src/shared/",
+    "@interfaces/": "./src/interfaces/",
     "@rules/": "./src/rules/",
+    "@utils/": "./src/utils/",
     "@tests/": "./tests/"
   },
   "publish": {

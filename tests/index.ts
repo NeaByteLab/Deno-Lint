@@ -1,5 +1,5 @@
 import { assertEquals } from '@std/assert'
-import plugin from '@app/mod.ts'
+import plugin from '@app/index.ts'
 
 export function runnerTest(rulesId: string, code: string, expectedDiagnosticsCount: number): void {
   const diagnostics = Deno.lint.runPlugin(plugin, 'test.ts', code)
