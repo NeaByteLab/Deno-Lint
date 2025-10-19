@@ -20,7 +20,7 @@ To exclude specific rules, configure them in your `deno.json`:
 {
   "lint": {
     "plugins": [
-      "jsr:@neabyte/deno-lint@0.1.0" // add this module
+      "jsr:@neabyte/deno-lint@0.2.1" // add this module
     ],
     "rules": {
       "exclude": [

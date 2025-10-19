@@ -1,7 +1,7 @@
 {
   "name": "@neabyte/deno-lint",
   "description": "Deno lint plugin collection for identifying and reporting on patterns found in code",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "type": "module",
   "license": "MIT",
   "exports": "./src/index.ts",
@@ -90,15 +90,16 @@
   },
   "publish": {
     "exclude": [
-      "tests/",
-      "dist/",
-      "coverage/",
-      "*.test.ts",
       "*.spec.ts",
+      "*.test.ts",
+      ".github/",
+      "coverage/",
       "deno.json",
-      "issue-testing/",
+      "development/",
+      "dist/",
       "examples/",
-      ".github/"
+      "issue-testing/",
+      "tests/"
     ]
   }
 }
