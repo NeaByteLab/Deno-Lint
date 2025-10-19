@@ -2,109 +2,63 @@
 
 This rule enforces that async function declarations must have the 'Async' suffix in their name.
 
-## ❌ Invalid Examples
+## Examples
 
-```typescript
-// Async function declarations without 'Async' suffix
-async function fetchUser() {
-  const response = await fetch('/api/user')
-  return response.json()
-}
+### Basic Async Function Naming
 
-async function processData(data: any[]) {
-  return data.map(item => item.processed)
-}
-
-async function saveToDatabase(record: User) {
-  await db.users.insert(record)
-}
-
-async function validateInput(input: string) {
-  return input.length > 0
-}
-
-// Complex async functions without 'Async' suffix
-async function getUserByIdAndUpdate(id: string, updates: Partial<User>) {
-  const user = await db.users.findById(id)
-  if (user) {
-    await db.users.update(id, updates)
-  }
-  return user
-}
-
-async function handleRequest(req: Request) {
-  const body = await req.json()
-  const result = await processRequest(body)
-  return new Response(JSON.stringify(result))
-}
-```
-
-## ✅ Valid Examples
-
-```typescript
-// Async function declarations with 'Async' suffix
-async function fetchUserAsync() {
-  const response = await fetch('/api/user')
-  return response.json()
-}
-
-async function processDataAsync(data: any[]) {
-  return data.map(item => item.processed)
-}
-
-async function saveToDatabaseAsync(record: User) {
-  await db.users.insert(record)
-}
-
-async function validateInputAsync(input: string) {
-  return input.length > 0
-}
-
-// Complex async functions with 'Async' suffix
-async function getUserByIdAndUpdateAsync(id: string, updates: Partial<User>) {
-  const user = await db.users.findById(id)
-  if (user) {
-    await db.users.update(id, updates)
-  }
-  return user
-}
-
-async function handleRequestAsync(req: Request) {
-  const body = await req.json()
-  const result = await processRequest(body)
-  return new Response(JSON.stringify(result))
-}
-
-// Non-async functions (not affected by this rule)
-function calculateSum(a: number, b: number) {
-  return a + b
-}
-
-const processData = (data: any[]) => {
-  return data.map(item => item.processed)
-}
-
-// Arrow functions and function expressions (not affected by this rule)
-const fetchUser = async () => {
-  const response = await fetch('/api/user')
-  return response.json()
-}
-
-const handler = async function (event: Event) {
-  event.preventDefault()
-}
-
-// Class methods (not affected by this rule)
-class UserService {
-  async fetchUser() {
+```diff
+- async function fetchUser() {
++ async function fetchUserAsync() {
     const response = await fetch('/api/user')
     return response.json()
   }
+```
 
-  async saveUser(user: User) {
-    await db.users.insert(user)
+### Async Function with Parameters
+
+```diff
+- async function processData(data: any[]) {
++ async function processDataAsync(data: any[]) {
+    return data.map(item => item.processed)
   }
-}
+```
+
+### Async Function with Complex Logic
+
+```diff
+- async function getUserByIdAndUpdate(id: string, updates: Partial<User>) {
++ async function getUserByIdAndUpdateAsync(id: string, updates: Partial<User>) {
+    const user = await db.users.findById(id)
+    if (user) {
+      await db.users.update(id, updates)
+    }
+    return user
+  }
+```
+
+### Async Function with Return Type
+
+```diff
+- async function validateInput(input: string): Promise<boolean> {
++ async function validateInputAsync(input: string): Promise<boolean> {
+    return input.length > 0
+  }
+```
+
+### Multiple Async Functions
+
+```diff
+- async function saveToDatabase(record: User) {
++ async function saveToDatabaseAsync(record: User) {
+    await db.users.insert(record)
+  }
+
+- async function handleRequest(req: Request) {
++ async function handleRequestAsync(req: Request) {
+    const body = await req.json()
+    const result = await processRequest(body)
+    return new Response(JSON.stringify(result))
+  }
 ```
 
 ## Rule Scope
