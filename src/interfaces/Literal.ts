@@ -5,7 +5,7 @@ export interface LiteralNode {
   /** Type identifier for literal nodes */
   type: 'Literal'
   /** The literal value */
-  value: string | number | boolean | null
+  value: string | number | boolean | null | bigint
   /** Raw string representation */
   raw?: string
 }

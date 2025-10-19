@@ -218,7 +218,7 @@ export function hasNestedConditions(node: DenoASTNode): boolean {
  */
 export function hasNestedIfStatement(statement: DenoASTNode): boolean {
   if (statement.type === 'BlockStatement') {
-    return statement.body.some((stmt) => hasNestedIfStatement(stmt as DenoASTNode))
+    return statement.body.some((stmt: DenoASTNode) => hasNestedIfStatement(stmt as DenoASTNode))
   }
   if (isIfStatement(statement)) {
     return true

@@ -4,6 +4,7 @@ import type {
   AssignmentExpressionNode,
   AssignmentPatternNode,
   AwaitExpressionNode,
+  BigIntLiteralNode,
   BinaryExpressionNode,
   BlockStatementNode,
   BreakStatementNode,
@@ -13,37 +14,67 @@ import type {
   ClassBodyNode,
   ClassDeclarationNode,
   ClassExpressionNode,
+  ClassFieldNode,
+  ClassMethodNode,
   ConditionalExpressionNode,
+  DebuggerStatementNode,
   DecoratorNode,
+  DoWhileStatementNode,
+  EmptyStatementNode,
+  ExportAllDeclarationNode,
+  ExportDefaultDeclarationNode,
   ExportNamedDeclarationNode,
   ExportSpecifierNode,
   ExpressionStatementNode,
+  ForInStatementNode,
   ForOfStatementNode,
   ForStatementNode,
   FunctionDeclarationNode,
   FunctionExpressionNode,
+  HashbangNode,
   IdentifierNode,
   IfStatementNode,
+  ImportAssertionNode,
+  ImportAttributeNode,
+  ImportDeclarationNode,
+  ImportDefaultSpecifierNode,
+  ImportExpressionNode,
+  ImportNamespaceSpecifierNode,
+  ImportSpecifierNode,
+  LabeledStatementNode,
   LiteralNode,
+  LogicalAssignmentNode,
   LogicalExpressionNode,
   MemberExpressionNode,
+  MetaPropertyNode,
   MethodDefinitionNode,
   NewExpressionNode,
+  NullishCoalescingNode,
+  NumericSeparatorNode,
   ObjectExpressionNode,
   ObjectPatternNode,
+  OptionalChainingNode,
   ParameterNode,
+  PipelineOperatorNode,
+  PrivateIdentifierNode,
   ProgramNode,
   PropertyDefinitionNode,
   PropertyNode,
+  RegExpLiteralNode,
+  RegExpWithIndicesNode,
   RestElementNode,
   ReturnStatementNode,
+  SequenceExpressionNode,
   SpreadElementNode,
+  StaticBlockNode,
+  SuperNode,
   SwitchCaseNode,
   SwitchStatementNode,
   TemplateElementNode,
   TemplateLiteralNode,
   ThisExpressionNode,
   ThrowStatementNode,
+  TopLevelAwaitNode,
   TryStatementNode,
   TSAnyKeywordNode,
   TSArrayTypeNode,
@@ -56,6 +87,7 @@ import type {
   TSEnumBodyNode,
   TSEnumDeclarationNode,
   TSEnumMemberNode,
+  TSExpressionWithTypeArgumentsNode,
   TSFunctionTypeNode,
   TSIndexedAccessTypeNode,
   TSIndexSignatureNode,
@@ -103,6 +135,7 @@ import type {
   VariableDeclarationNode,
   VariableDeclaratorNode,
   WhileStatementNode,
+  WithStatementNode,
   YieldExpressionNode
 } from '@interfaces/index.ts'
 
@@ -115,6 +148,7 @@ export type JSASTNode =
   | AssignmentExpressionNode
   | AssignmentPatternNode
   | AwaitExpressionNode
+  | BigIntLiteralNode
   | BinaryExpressionNode
   | BlockStatementNode
   | BreakStatementNode
@@ -124,43 +158,74 @@ export type JSASTNode =
   | ClassBodyNode
   | ClassDeclarationNode
   | ClassExpressionNode
+  | ClassFieldNode
+  | ClassMethodNode
   | ConditionalExpressionNode
+  | DebuggerStatementNode
   | DecoratorNode
+  | DoWhileStatementNode
+  | EmptyStatementNode
+  | ExportAllDeclarationNode
+  | ExportDefaultDeclarationNode
   | ExportNamedDeclarationNode
   | ExportSpecifierNode
   | ExpressionStatementNode
+  | ForInStatementNode
   | ForOfStatementNode
   | ForStatementNode
   | FunctionDeclarationNode
   | FunctionExpressionNode
+  | HashbangNode
   | IdentifierNode
   | IfStatementNode
+  | ImportAssertionNode
+  | ImportAttributeNode
+  | ImportDeclarationNode
+  | ImportDefaultSpecifierNode
+  | ImportExpressionNode
+  | ImportNamespaceSpecifierNode
+  | ImportSpecifierNode
+  | LabeledStatementNode
   | LiteralNode
+  | LogicalAssignmentNode
   | LogicalExpressionNode
   | MemberExpressionNode
+  | MetaPropertyNode
   | MethodDefinitionNode
   | NewExpressionNode
+  | NullishCoalescingNode
+  | NumericSeparatorNode
   | ObjectExpressionNode
   | ObjectPatternNode
+  | OptionalChainingNode
   | ParameterNode
+  | PipelineOperatorNode
+  | PrivateIdentifierNode
   | ProgramNode
   | PropertyNode
   | PropertyDefinitionNode
+  | RegExpLiteralNode
+  | RegExpWithIndicesNode
   | RestElementNode
   | ReturnStatementNode
+  | SequenceExpressionNode
   | SpreadElementNode
+  | StaticBlockNode
+  | SuperNode
   | SwitchCaseNode
   | SwitchStatementNode
   | TemplateElementNode
   | TemplateLiteralNode
   | ThisExpressionNode
   | ThrowStatementNode
+  | TopLevelAwaitNode
   | TryStatementNode
   | UnaryExpressionNode
   | UpdateExpressionNode
   | VariableDeclarationNode
   | VariableDeclaratorNode
   | WhileStatementNode
+  | WithStatementNode
   | YieldExpressionNode
 
 /**
@@ -178,6 +243,7 @@ export type TSASTNode =
   | TSEnumBodyNode
   | TSEnumDeclarationNode
   | TSEnumMemberNode
+  | TSExpressionWithTypeArgumentsNode
   | TSFunctionTypeNode
   | TSIndexedAccessTypeNode
   | TSIndexSignatureNode

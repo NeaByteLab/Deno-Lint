@@ -1,11 +1,11 @@
 import type { ASTNode } from '@interfaces/index.ts'
 
 /**
- * AST node representing an await expression.
+ * AST node representing a top-level await expression.
  */
-export interface AwaitExpressionNode {
-  /** Type identifier for await expressions */
-  type: 'AwaitExpression'
+export interface TopLevelAwaitNode {
+  /** Type identifier for top-level await */
+  type: 'TopLevelAwait'
   /** Source code range */
   range: [number, number]
   /** Expression being awaited */

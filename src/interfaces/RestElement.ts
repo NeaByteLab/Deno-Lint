@@ -1,4 +1,4 @@
-import type { ASTNode, TSTypeAnnotationNode } from '@interfaces/index.ts'
+import type { ASTNode } from '@interfaces/index.ts'
 
 /**
  * AST node representing a rest element.
@@ -10,6 +10,4 @@ export interface RestElementNode {
   range: [number, number]
   /** Rest argument */
   argument: ASTNode
-  /** Type annotation */
-  typeAnnotation?: TSTypeAnnotationNode
 }
