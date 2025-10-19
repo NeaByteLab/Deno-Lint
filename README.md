@@ -7,11 +7,16 @@ Deno lint plugin collection for identifying and reporting on patterns found in c
 - [`async-function-naming`](./examples/async-function-naming.md) - Enforces async functions to have 'Async' suffix
 - [`explicit-parameter-types`](./examples/explicit-parameter-types.md) - Requires explicit type annotations on parameters
 - [`explicit-return-types`](./examples/explicit-return-types.md) - Requires explicit return type annotations
+- [`prefer-array-every`](./examples/prefer-array-every.md) - Prefers `Array.every()` over manual iteration patterns
+- [`prefer-arrow-callback`](./examples/prefer-arrow-callback.md) - Prefers arrow functions over regular function expressions in callback contexts
+- [`prefer-array-some`](./examples/prefer-array-some.md) - Prefers `Array.some()` over manual iteration patterns
+- [`prefer-const-assertions`](./examples/prefer-const-assertions.md) - Prefers `as const` over type assertion for better type inference
+- [`prefer-early-return`](./examples/prefer-early-return.md) - Prefers early returns over nested conditions for better readability
 - [`prefer-nullish-coalescing`](./examples/prefer-nullish-coalescing.md) - Prefers nullish coalescing (??) over logical OR (||) for null/undefined checks
 - [`prefer-optional-chain`](./examples/prefer-optional-chain.md) - Prefers optional chaining (?.) over logical AND (&&) for property access
-- [`prefer-template-literals`](./examples/prefer-template-literals.md) - Prefers template literals over string concatenation
-- [`prefer-early-return`](./examples/prefer-early-return.md) - Prefers early returns over nested conditions for better readability
 - [`prefer-promise-reject-errors`](./examples/prefer-promise-reject-errors.md) - Enforces Error objects in Promise.reject() calls
+- [`prefer-spread`](./examples/prefer-spread.md) - Prefers spread syntax (...) over manual array/object operations
+- [`prefer-template-literals`](./examples/prefer-template-literals.md) - Prefers template literals over string concatenation
 - [`require-error-handling`](./examples/require-error-handling.md) - Ensures Deno file operations are properly awaited
 
 ## Installation

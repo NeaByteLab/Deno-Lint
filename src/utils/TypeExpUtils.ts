@@ -4,22 +4,16 @@ import type {
   AssignmentExpressionNode,
   AwaitExpressionNode,
   BinaryExpressionNode,
-  BlockStatementNode,
   CallExpressionNode,
   ChainExpressionNode,
   ClassExpressionNode,
   ConditionalExpressionNode,
   DenoASTNode,
-  FunctionDeclarationNode,
   FunctionExpressionNode,
-  IfStatementNode,
-  LiteralNode,
   LogicalExpressionNode,
   MemberExpressionNode,
-  MethodDefinitionNode,
   NewExpressionNode,
   ObjectExpressionNode,
-  ReturnStatementNode,
   ThisExpressionNode,
   TSAsExpressionNode,
   UnaryExpressionNode,
@@ -73,15 +67,6 @@ export function isBinaryExpression(node: DenoASTNode): node is BinaryExpressionN
 }
 
 /**
- * Type guard to check if a node is a block statement.
- * @param node - The AST node to check
- * @returns True if the node is a block statement, false otherwise
- */
-export function isBlockStatement(node: DenoASTNode): node is BlockStatementNode {
-  return node.type === 'BlockStatement'
-}
-
-/**
  * Type guard to check if a node is a call expression.
  * @param node - The AST node to check
  * @returns True if the node is a call expression, false otherwise
@@ -118,39 +103,12 @@ export function isConditionalExpression(node: DenoASTNode): node is ConditionalE
 }
 
 /**
- * Type guard to check if a node is a function declaration.
- * @param node - The AST node to check
- * @returns True if the node is a function declaration, false otherwise
- */
-export function isFunctionDeclaration(node: DenoASTNode): node is FunctionDeclarationNode {
-  return node.type === 'FunctionDeclaration'
-}
-
-/**
  * Type guard to check if a node is a function expression.
  * @param node - The AST node to check
  * @returns True if the node is a function expression, false otherwise
  */
 export function isFunctionExpression(node: DenoASTNode): node is FunctionExpressionNode {
   return node.type === 'FunctionExpression'
-}
-
-/**
- * Type guard to check if a node is an if statement.
- * @param node - The AST node to check
- * @returns True if the node is an if statement, false otherwise
- */
-export function isIfStatement(node: DenoASTNode): node is IfStatementNode {
-  return node.type === 'IfStatement'
-}
-
-/**
- * Type guard to check if a node is a literal.
- * @param node - The AST node to check
- * @returns True if the node is a literal, false otherwise
- */
-export function isLiteral(node: DenoASTNode): node is LiteralNode {
-  return node.type === 'Literal'
 }
 
 /**
@@ -172,15 +130,6 @@ export function isMemberExpression(node: DenoASTNode): node is MemberExpressionN
 }
 
 /**
- * Type guard to check if a node is a method definition.
- * @param node - The AST node to check
- * @returns True if the node is a method definition, false otherwise
- */
-export function isMethodDefinition(node: DenoASTNode): node is MethodDefinitionNode {
-  return node.type === 'MethodDefinition'
-}
-
-/**
  * Type guard to check if a node is a new expression.
  * @param node - The AST node to check
  * @returns True if the node is a new expression, false otherwise
@@ -199,12 +148,12 @@ export function isObjectExpression(node: DenoASTNode): node is ObjectExpressionN
 }
 
 /**
- * Type guard to check if a node is a return statement.
+ * Type guard to check if a node is a this expression.
  * @param node - The AST node to check
- * @returns True if the node is a return statement, false otherwise
+ * @returns True if the node is a this expression, false otherwise
  */
-export function isReturnStatement(node: DenoASTNode): node is ReturnStatementNode {
-  return node.type === 'ReturnStatement'
+export function isThisExpression(node: DenoASTNode): node is ThisExpressionNode {
+  return node.type === 'ThisExpression'
 }
 
 /**
@@ -214,15 +163,6 @@ export function isReturnStatement(node: DenoASTNode): node is ReturnStatementNod
  */
 export function isTSAsExpression(node: DenoASTNode): node is TSAsExpressionNode {
   return node.type === 'TSAsExpression'
-}
-
-/**
- * Type guard to check if a node is a this expression.
- * @param node - The AST node to check
- * @returns True if the node is a this expression, false otherwise
- */
-export function isThisExpression(node: DenoASTNode): node is ThisExpressionNode {
-  return node.type === 'ThisExpression'
 }
 
 /**

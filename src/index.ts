@@ -1,14 +1,5 @@
 import type { LintPlugin } from '@interfaces/index.ts'
-import { asyncFunctionNamingRule } from '@rules/AsyncFunctionNaming.ts'
-import { explicitParameterTypesRule } from '@rules/ExplicitParameterTypes.ts'
-import { explicitReturnTypesRule } from '@rules/ExplicitReturnTypes.ts'
-import { preferConstAssertionsRule } from '@rules/PreferConstAssertions.ts'
-import { preferNullishCoalescingRule } from '@rules/PreferNullishCoalescing.ts'
-import { preferOptionalChainRule } from '@rules/PreferOptionalChain.ts'
-import { preferPromiseRejectErrorsRule } from '@rules/PreferPromiseRejectErrors.ts'
-import { preferTemplateLiteralsRule } from '@rules/PreferTemplateLiterals.ts'
-import { preferEarlyReturnRule } from '@rules/PreferEarlyReturn.ts'
-import { requireErrorHandlingRule } from '@rules/RequireErrorHandling.ts'
+import * as rules from '@rules/index.ts'
 
 /**
  * Deno lint plugin containing custom linting rules.
@@ -16,16 +7,20 @@ import { requireErrorHandlingRule } from '@rules/RequireErrorHandling.ts'
 const plugin: LintPlugin = {
   name: 'deno-lint',
   rules: {
-    'async-function-naming': asyncFunctionNamingRule,
-    'explicit-parameter-types': explicitParameterTypesRule,
-    'explicit-return-types': explicitReturnTypesRule,
-    'prefer-const-assertions': preferConstAssertionsRule,
-    'prefer-nullish-coalescing': preferNullishCoalescingRule,
-    'prefer-optional-chain': preferOptionalChainRule,
-    'prefer-template-literals': preferTemplateLiteralsRule,
-    'prefer-early-return': preferEarlyReturnRule,
-    'prefer-promise-reject-errors': preferPromiseRejectErrorsRule,
-    'require-error-handling': requireErrorHandlingRule
+    'async-function-naming': rules.asyncFunctionNamingRule,
+    'explicit-parameter-types': rules.explicitParameterTypesRule,
+    'explicit-return-types': rules.explicitReturnTypesRule,
+    'prefer-array-every': rules.preferArrayEveryRule,
+    'prefer-arrow-callback': rules.preferArrowCallbackRule,
+    'prefer-array-some': rules.preferArraySomeRule,
+    'prefer-const-assertions': rules.preferConstAssertionsRule,
+    'prefer-early-return': rules.preferEarlyReturnRule,
+    'prefer-nullish-coalescing': rules.preferNullishCoalescingRule,
+    'prefer-optional-chain': rules.preferOptionalChainRule,
+    'prefer-promise-reject-errors': rules.preferPromiseRejectErrorsRule,
+    'prefer-spread': rules.preferSpreadRule,
+    'prefer-template-literals': rules.preferTemplateLiteralsRule,
+    'require-error-handling': rules.requireErrorHandlingRule
   }
 }
 
