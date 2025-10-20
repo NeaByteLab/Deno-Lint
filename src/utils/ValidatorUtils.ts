@@ -1,28 +1,5 @@
-import type {
-  ArrowFunctionExpressionNode,
-  BlockStatementNode,
-  CallExpressionNode,
-  DenoASTNode,
-  FunctionDeclarationNode,
-  FunctionExpressionNode,
-  IdentifierNode,
-  LintContext,
-  LogicalExpressionNode,
-  MemberExpressionNode,
-  ParameterNode,
-  TSAsExpressionNode,
-  TSTypeNameNode,
-  TSTypeReferenceNode
-} from '@interfaces/index.ts'
-import {
-  isArrowFunctionExpression,
-  isFunctionDeclaration,
-  isFunctionExpression,
-  isIfStatement,
-  isLiteral,
-  isLogicalExpression
-} from '@utils/index.ts'
-import { isDenoApiCall, isErrorConstructor, isPromiseReject } from '@utils/index.ts'
+import type * as types from '@interfaces/index.ts'
+import * as utils from '@utils/index.ts'
 
 /**
  * Array of Deno file operations that require error handling.
@@ -72,23 +49,26 @@ export const BUILT_IN_GLOBALS = ['undefined', 'null', 'true', 'false', 'NaN', 'I
  * @param context - The lint context for accessing source code
  * @returns True if the expression can be converted to optional chaining, false otherwise
  */
-export function canConvertToOptionalChain(node: DenoASTNode, context: LintContext): boolean {
-  if (!isLogicalExpression(node)) {
+export function canConvertToOptionalChain(
+  node: types.DenoASTNode,
+  context: types.LintContext
+): boolean {
+  if (!utils.isLogicalExpression(node)) {
     return false
   }
-  const logicalNode = node as LogicalExpressionNode
+  const logicalNode = node as types.LogicalExpressionNode
   if (logicalNode.operator !== '&&') {
     return false
   }
   const leftText = context.sourceCode.getText(logicalNode.left)
   const rightNode = logicalNode.right
-  if (rightNode.type === 'MemberExpression' && !rightNode.optional) {
+  if (utils.isMemberExpression(rightNode) && !rightNode.optional) {
     const rightObjectText = context.sourceCode.getText(rightNode.object)
     if (leftText === rightObjectText) {
       return true
     }
   }
-  if (rightNode.type === 'CallExpression') {
+  if (utils.isCallExpression(rightNode)) {
     return canConvertCallExpression(rightNode, leftText, context)
   }
   return false
@@ -100,7 +80,7 @@ export function canConvertToOptionalChain(node: DenoASTNode, context: LintContex
  * @param suffix - The required suffix for async functions
  * @returns True if the function follows the naming convention, false otherwise
  */
-export function followsAsyncNamingConvention(node: DenoASTNode, suffix = 'Async'): boolean {
+export function followsAsyncNamingConvention(node: types.DenoASTNode, suffix = 'Async'): boolean {
   const functionName = (node as { id?: { name: string } }).id?.name
   if (!functionName) {
     return true
@@ -117,24 +97,24 @@ export function followsAsyncNamingConvention(node: DenoASTNode, suffix = 'Async'
  * @param node - The AST node to check
  * @returns True if the node has a const assertion, false otherwise
  */
-export function hasConstAssertion(node: DenoASTNode): boolean {
-  const parent = (node as DenoASTNode).parent
-  if (!parent || parent.type !== 'TSAsExpression') {
+export function hasConstAssertion(node: types.DenoASTNode): boolean {
+  const parent = (node as types.DenoASTNode).parent
+  if (!parent || !utils.isTSAsExpression(parent)) {
     return false
   }
-  const tsAsNode = parent as TSAsExpressionNode
+  const tsAsNode = parent as types.TSAsExpressionNode
   if (tsAsNode.typeAnnotation.type !== 'TSTypeReference') {
     return false
   }
-  const typeRef = tsAsNode.typeAnnotation as TSTypeReferenceNode
+  const typeRef = tsAsNode.typeAnnotation as types.TSTypeReferenceNode
   if (typeRef.typeName.type !== 'TSTypeName') {
     return false
   }
-  const typeName = typeRef.typeName as TSTypeNameNode
-  if (typeName.name.type !== 'Identifier') {
+  const typeName = typeRef.typeName as types.TSTypeNameNode
+  if (!utils.isIdentifier(typeName.name)) {
     return false
   }
-  const identifier = typeName.name as IdentifierNode
+  const identifier = typeName.name as types.IdentifierNode
   return identifier.name === 'const'
 }
 
@@ -143,9 +123,9 @@ export function hasConstAssertion(node: DenoASTNode): boolean {
  * @param node - The function node
  * @returns True if all parameters have type annotations, false otherwise
  */
-export function hasExplicitParameterTypes(node: DenoASTNode): boolean {
-  const params = (node as { params?: ParameterNode[] }).params || []
-  return params.every((param: ParameterNode) => {
+export function hasExplicitParameterTypes(node: types.DenoASTNode): boolean {
+  const params = (node as { params?: types.ParameterNode[] }).params || []
+  return params.every((param: types.ParameterNode) => {
     switch (param.type) {
       case 'Identifier':
         return param.typeAnnotation !== undefined
@@ -169,7 +149,7 @@ export function hasExplicitParameterTypes(node: DenoASTNode): boolean {
  * @param node - The function node
  * @returns True if the function has return type, false otherwise
  */
-export function hasExplicitReturnType(node: DenoASTNode): boolean {
+export function hasExplicitReturnType(node: types.DenoASTNode): boolean {
   return (node as { returnType?: string }).returnType !== undefined
 }
 
@@ -178,28 +158,28 @@ export function hasExplicitReturnType(node: DenoASTNode): boolean {
  * @param node - The function node to analyze
  * @returns True if the function has nested conditions that could be refactored
  */
-export function hasNestedConditions(node: DenoASTNode): boolean {
+export function hasNestedConditions(node: types.DenoASTNode): boolean {
   if (
-    !isFunctionDeclaration(node) &&
-    !isFunctionExpression(node) &&
-    !isArrowFunctionExpression(node)
+    !utils.isFunctionDeclaration(node) &&
+    !utils.isFunctionExpression(node) &&
+    !utils.isArrowFunctionExpression(node)
   ) {
     return false
   }
   const functionNode = node as
-    | FunctionDeclarationNode
-    | FunctionExpressionNode
-    | ArrowFunctionExpressionNode
-  if (!functionNode.body || functionNode.body.type !== 'BlockStatement') {
+    | types.FunctionDeclarationNode
+    | types.FunctionExpressionNode
+    | types.ArrowFunctionExpressionNode
+  if (!functionNode.body || !utils.isBlockStatement(functionNode.body)) {
     return false
   }
-  const blockStatement = functionNode.body as BlockStatementNode
+  const blockStatement = functionNode.body as types.BlockStatementNode
   const statements = blockStatement.body
   if (statements.length === 0) {
     return false
   }
   for (const statement of statements) {
-    if (statement.type === 'IfStatement') {
+    if (utils.isIfStatement(statement)) {
       if (statement.alternate && hasNestedIfStatement(statement.alternate)) {
         return true
       }
@@ -216,11 +196,13 @@ export function hasNestedConditions(node: DenoASTNode): boolean {
  * @param statement - The statement to analyze
  * @returns True if the statement contains nested if statements
  */
-export function hasNestedIfStatement(statement: DenoASTNode): boolean {
-  if (statement.type === 'BlockStatement') {
-    return statement.body.some((stmt: DenoASTNode) => hasNestedIfStatement(stmt as DenoASTNode))
+export function hasNestedIfStatement(statement: types.DenoASTNode): boolean {
+  if (utils.isBlockStatement(statement)) {
+    return statement.body.some((stmt: types.DenoASTNode) =>
+      hasNestedIfStatement(stmt as types.DenoASTNode)
+    )
   }
-  if (isIfStatement(statement)) {
+  if (utils.isIfStatement(statement)) {
     return true
   }
   return false
@@ -231,18 +213,18 @@ export function hasNestedIfStatement(statement: DenoASTNode): boolean {
  * @param node - The AST node to check
  * @returns True if the node is top-level, false otherwise
  */
-export function isTopLevelExpression(node: DenoASTNode): boolean {
-  const parent = (node as DenoASTNode).parent
+export function isTopLevelExpression(node: types.DenoASTNode): boolean {
+  const parent = (node as types.DenoASTNode).parent
   if (!parent) {
     return true
   }
   return (
-    parent.type === 'VariableDeclarator' ||
-    parent.type === 'FunctionDeclaration' ||
-    parent.type === 'ArrowFunctionExpression' ||
-    parent.type === 'FunctionExpression' ||
-    parent.type === 'ReturnStatement' ||
-    parent.type === 'AssignmentExpression'
+    utils.isVariableDeclarator(parent) ||
+    utils.isFunctionDeclaration(parent) ||
+    utils.isArrowFunctionExpression(parent) ||
+    utils.isFunctionExpression(parent) ||
+    utils.isReturnStatement(parent) ||
+    utils.isAssignmentExpression(parent)
   )
 }
 
@@ -251,12 +233,14 @@ export function isTopLevelExpression(node: DenoASTNode): boolean {
  * @param node - The call expression node
  * @returns True if the call requires error handling, false otherwise
  */
-export function requiresErrorHandling(node: DenoASTNode): boolean {
-  if (!isDenoApiCall(node)) {
+export function requiresErrorHandling(node: types.DenoASTNode): boolean {
+  if (!utils.isDenoApiCall(node)) {
     return false
   }
-  const callNode = node as CallExpressionNode
-  const methodName = ((callNode.callee as MemberExpressionNode).property as IdentifierNode).name
+  const callNode = node as types.CallExpressionNode
+  const methodName = (
+    (callNode.callee as types.MemberExpressionNode).property as types.IdentifierNode
+  ).name
   return DENO_FILE_OPERATIONS.includes(methodName)
 }
 
@@ -265,16 +249,16 @@ export function requiresErrorHandling(node: DenoASTNode): boolean {
  * @param node - The logical expression node to check
  * @returns True if the expression should use nullish coalescing, false otherwise
  */
-export function shouldUseNullishCoalescing(node: DenoASTNode): boolean {
-  if (!isLogicalExpression(node)) {
+export function shouldUseNullishCoalescing(node: types.DenoASTNode): boolean {
+  if (!utils.isLogicalExpression(node)) {
     return false
   }
-  const logicalNode = node as LogicalExpressionNode
+  const logicalNode = node as types.LogicalExpressionNode
   if (logicalNode.operator !== '||') {
     return false
   }
   const rightSide = logicalNode.right
-  if (isLiteral(rightSide)) {
+  if (utils.isLiteral(rightSide)) {
     const value = rightSide.value
     if (value === '' || value === 0 || value === false) {
       return true
@@ -288,11 +272,11 @@ export function shouldUseNullishCoalescing(node: DenoASTNode): boolean {
  * @param node - The Promise.reject() call expression node
  * @returns True if the call uses an Error object, false otherwise
  */
-export function usesErrorObject(node: DenoASTNode): boolean {
-  if (!isPromiseReject(node)) {
+export function usesErrorObject(node: types.DenoASTNode): boolean {
+  if (!utils.isPromiseReject(node)) {
     return false
   }
-  const callNode = node as CallExpressionNode
+  const callNode = node as types.CallExpressionNode
   if (callNode.arguments.length === 0) {
     return false
   }
@@ -300,19 +284,19 @@ export function usesErrorObject(node: DenoASTNode): boolean {
   if (!firstArg) {
     return false
   }
-  if (isErrorConstructor(firstArg)) {
+  if (utils.isErrorConstructor(firstArg)) {
     return true
   }
-  if (firstArg.type === 'CallExpression') {
+  if (utils.isCallExpression(firstArg)) {
     const callee = firstArg.callee
-    if (callee.type === 'MemberExpression') {
+    if (utils.isMemberExpression(callee)) {
       const object = callee.object
-      if (isErrorConstructor(object)) {
+      if (utils.isErrorConstructor(object)) {
         return true
       }
     }
   }
-  if (firstArg.type === 'Identifier') {
+  if (utils.isIdentifier(firstArg)) {
     if (firstArg.name && BUILT_IN_GLOBALS.includes(firstArg.name)) {
       return false
     }
@@ -329,27 +313,31 @@ export function usesErrorObject(node: DenoASTNode): boolean {
  * @returns True if the call can be converted, false otherwise
  */
 function canConvertCallExpression(
-  callNode: CallExpressionNode,
+  callNode: types.CallExpressionNode,
   leftText: string,
-  context: LintContext
+  context: types.LintContext
 ): boolean {
   const callee = callNode.callee
-  if (callee.type === 'MemberExpression' && !(callee as DenoASTNode).optional) {
+  if (utils.isMemberExpression(callee) && !(callee as types.DenoASTNode).optional) {
     const rightObjectText = context.sourceCode.getText(callee.object)
     if (leftText === rightObjectText) {
       return true
     }
-    if ((callee.object as DenoASTNode).type === 'CallExpression') {
+    if (utils.isCallExpression(callee.object as types.DenoASTNode)) {
       return canConvertCallExpression(
-        callee.object as unknown as CallExpressionNode,
+        callee.object as unknown as types.CallExpressionNode,
         leftText,
         context
       )
     }
     return false
   }
-  if ((callee as DenoASTNode).type === 'CallExpression') {
-    return canConvertCallExpression(callee as unknown as CallExpressionNode, leftText, context)
+  if (utils.isCallExpression(callee as types.DenoASTNode)) {
+    return canConvertCallExpression(
+      callee as unknown as types.CallExpressionNode,
+      leftText,
+      context
+    )
   }
   return false
 }

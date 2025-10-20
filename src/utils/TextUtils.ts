@@ -1,10 +1,5 @@
-import type {
-  CallExpressionNode,
-  DenoASTNode,
-  LintContext,
-  LogicalExpressionNode
-} from '@interfaces/index.ts'
-import { isCallExpression, isMemberExpression } from '@utils/index.ts'
+import type * as types from '@interfaces/index.ts'
+import * as utils from '@utils/index.ts'
 
 /**
  * Converts a call expression to optional chaining.
@@ -14,23 +9,23 @@ import { isCallExpression, isMemberExpression } from '@utils/index.ts'
  * @returns The converted right side as a string
  */
 export function convertCallExpression(
-  callNode: CallExpressionNode,
+  callNode: types.CallExpressionNode,
   leftText: string,
-  context: LintContext
+  context: types.LintContext
 ): string {
   const callee = callNode.callee
-  if (isMemberExpression(callee) && !(callee as DenoASTNode).optional) {
+  if (utils.isMemberExpression(callee) && !(callee as types.DenoASTNode).optional) {
     const rightObjectText = context.sourceCode.getText(callee.object)
     if (leftText === rightObjectText) {
       const rightText = context.sourceCode.getText(callNode)
-      const isComputed = (callee as DenoASTNode).computed === true
+      const isComputed = (callee as types.DenoASTNode).computed === true
       return convertToOptionalChaining(rightText, isComputed)
     }
-    if (isCallExpression(callee.object)) {
+    if (utils.isCallExpression(callee.object)) {
       const convertedObject = convertCallExpression(callee.object, leftText, context)
       if (convertedObject !== context.sourceCode.getText(callee.object)) {
         const propertyText = context.sourceCode.getText(callee.property)
-        const isComputed = (callee as DenoASTNode).computed === true
+        const isComputed = (callee as types.DenoASTNode).computed === true
         const IS_METHOD_CALL = true
         return reconstructMemberExpression(
           convertedObject,
@@ -41,7 +36,7 @@ export function convertCallExpression(
       }
     }
   }
-  if (isCallExpression(callee)) {
+  if (utils.isCallExpression(callee)) {
     return convertCallExpression(callee, leftText, context)
   }
   return context.sourceCode.getText(callNode)
@@ -53,18 +48,21 @@ export function convertCallExpression(
  * @param context - The lint context for accessing source code
  * @returns The converted code as a string
  */
-export function convertToOptionalChain(node: DenoASTNode, context: LintContext): string {
-  const logicalNode = node as LogicalExpressionNode
+export function convertToOptionalChain(
+  node: types.DenoASTNode,
+  context: types.LintContext
+): string {
+  const logicalNode = node as types.LogicalExpressionNode
   const leftText = context.sourceCode.getText(logicalNode.left)
   const rightText = context.sourceCode.getText(logicalNode.right)
-  if (isMemberExpression(logicalNode.right)) {
+  if (utils.isMemberExpression(logicalNode.right)) {
     const rightObjectText = context.sourceCode.getText(logicalNode.right.object)
     if (leftText === rightObjectText) {
       const isComputed = logicalNode.right.computed === true
       const convertedRight = convertToOptionalChaining(rightText, isComputed)
       return `${leftText}${convertedRight}`
     }
-    if (isCallExpression(logicalNode.right.object)) {
+    if (utils.isCallExpression(logicalNode.right.object)) {
       const convertedObject = convertCallExpression(logicalNode.right.object, leftText, context)
       if (convertedObject !== rightObjectText) {
         const propertyText = context.sourceCode.getText(logicalNode.right.property)
@@ -82,7 +80,7 @@ export function convertToOptionalChain(node: DenoASTNode, context: LintContext):
     const convertedRight = convertToOptionalChaining(rightText, isComputed)
     return `${leftText}${convertedRight}`
   }
-  if (isCallExpression(logicalNode.right)) {
+  if (utils.isCallExpression(logicalNode.right)) {
     const convertedRight = convertCallExpression(logicalNode.right, leftText, context)
     return `${leftText}${convertedRight}`
   }
@@ -146,8 +144,8 @@ export function escapeRegExp(string: string): string {
  * @returns Object containing function signature parts
  */
 export function extractFunctionSignature(
-  node: DenoASTNode,
-  context: LintContext
+  node: types.DenoASTNode,
+  context: types.LintContext
 ): {
   functionName: string
   params: string
@@ -173,7 +171,7 @@ export function extractFunctionSignature(
  * @param context - The lint context for accessing source code
  * @returns The inferred return type
  */
-export function inferReturnType(node: DenoASTNode, context: LintContext): string {
+export function inferReturnType(node: types.DenoASTNode, context: types.LintContext): string {
   const body = context.sourceCode.getText(node)
   if (body.includes('return')) {
     if (/\breturn\s+(true|false)\b/.test(body)) {

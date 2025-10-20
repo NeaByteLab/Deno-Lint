@@ -1,32 +1,11 @@
-import type {
-  ArrayExpressionNode,
-  ArrowFunctionExpressionNode,
-  AssignmentExpressionNode,
-  AwaitExpressionNode,
-  BinaryExpressionNode,
-  CallExpressionNode,
-  ChainExpressionNode,
-  ClassExpressionNode,
-  ConditionalExpressionNode,
-  DenoASTNode,
-  FunctionExpressionNode,
-  LogicalExpressionNode,
-  MemberExpressionNode,
-  NewExpressionNode,
-  ObjectExpressionNode,
-  ThisExpressionNode,
-  TSAsExpressionNode,
-  UnaryExpressionNode,
-  UpdateExpressionNode,
-  YieldExpressionNode
-} from '@interfaces/index.ts'
+import type * as types from '@interfaces/index.ts'
 
 /**
  * Type guard to check if a node is an array expression.
  * @param node - The AST node to check
  * @returns True if the node is an array expression, false otherwise
  */
-export function isArrayExpression(node: DenoASTNode): node is ArrayExpressionNode {
+export function isArrayExpression(node: types.DenoASTNode): node is types.ArrayExpressionNode {
   return node.type === 'ArrayExpression'
 }
 
@@ -35,7 +14,9 @@ export function isArrayExpression(node: DenoASTNode): node is ArrayExpressionNod
  * @param node - The AST node to check
  * @returns True if the node is an arrow function expression, false otherwise
  */
-export function isArrowFunctionExpression(node: DenoASTNode): node is ArrowFunctionExpressionNode {
+export function isArrowFunctionExpression(
+  node: types.DenoASTNode
+): node is types.ArrowFunctionExpressionNode {
   return node.type === 'ArrowFunctionExpression'
 }
 
@@ -44,7 +25,9 @@ export function isArrowFunctionExpression(node: DenoASTNode): node is ArrowFunct
  * @param node - The AST node to check
  * @returns True if the node is an assignment expression, false otherwise
  */
-export function isAssignmentExpression(node: DenoASTNode): node is AssignmentExpressionNode {
+export function isAssignmentExpression(
+  node: types.DenoASTNode
+): node is types.AssignmentExpressionNode {
   return node.type === 'AssignmentExpression'
 }
 
@@ -53,7 +36,7 @@ export function isAssignmentExpression(node: DenoASTNode): node is AssignmentExp
  * @param node - The AST node to check
  * @returns True if the node is an await expression, false otherwise
  */
-export function isAwaitExpression(node: DenoASTNode): node is AwaitExpressionNode {
+export function isAwaitExpression(node: types.DenoASTNode): node is types.AwaitExpressionNode {
   return node.type === 'AwaitExpression'
 }
 
@@ -62,7 +45,7 @@ export function isAwaitExpression(node: DenoASTNode): node is AwaitExpressionNod
  * @param node - The AST node to check
  * @returns True if the node is a binary expression, false otherwise
  */
-export function isBinaryExpression(node: DenoASTNode): node is BinaryExpressionNode {
+export function isBinaryExpression(node: types.DenoASTNode): node is types.BinaryExpressionNode {
   return node.type === 'BinaryExpression'
 }
 
@@ -71,7 +54,7 @@ export function isBinaryExpression(node: DenoASTNode): node is BinaryExpressionN
  * @param node - The AST node to check
  * @returns True if the node is a call expression, false otherwise
  */
-export function isCallExpression(node: DenoASTNode): node is CallExpressionNode {
+export function isCallExpression(node: types.DenoASTNode): node is types.CallExpressionNode {
   return node.type === 'CallExpression'
 }
 
@@ -80,7 +63,7 @@ export function isCallExpression(node: DenoASTNode): node is CallExpressionNode 
  * @param node - The AST node to check
  * @returns True if the node is a chain expression, false otherwise
  */
-export function isChainExpression(node: DenoASTNode): node is ChainExpressionNode {
+export function isChainExpression(node: types.DenoASTNode): node is types.ChainExpressionNode {
   return node.type === 'ChainExpression'
 }
 
@@ -89,7 +72,7 @@ export function isChainExpression(node: DenoASTNode): node is ChainExpressionNod
  * @param node - The AST node to check
  * @returns True if the node is a class expression, false otherwise
  */
-export function isClassExpression(node: DenoASTNode): node is ClassExpressionNode {
+export function isClassExpression(node: types.DenoASTNode): node is types.ClassExpressionNode {
   return node.type === 'ClassExpression'
 }
 
@@ -98,7 +81,9 @@ export function isClassExpression(node: DenoASTNode): node is ClassExpressionNod
  * @param node - The AST node to check
  * @returns True if the node is a conditional expression, false otherwise
  */
-export function isConditionalExpression(node: DenoASTNode): node is ConditionalExpressionNode {
+export function isConditionalExpression(
+  node: types.DenoASTNode
+): node is types.ConditionalExpressionNode {
   return node.type === 'ConditionalExpression'
 }
 
@@ -107,7 +92,9 @@ export function isConditionalExpression(node: DenoASTNode): node is ConditionalE
  * @param node - The AST node to check
  * @returns True if the node is a function expression, false otherwise
  */
-export function isFunctionExpression(node: DenoASTNode): node is FunctionExpressionNode {
+export function isFunctionExpression(
+  node: types.DenoASTNode
+): node is types.FunctionExpressionNode {
   return node.type === 'FunctionExpression'
 }
 
@@ -116,7 +103,7 @@ export function isFunctionExpression(node: DenoASTNode): node is FunctionExpress
  * @param node - The AST node to check
  * @returns True if the node is a logical expression, false otherwise
  */
-export function isLogicalExpression(node: DenoASTNode): node is LogicalExpressionNode {
+export function isLogicalExpression(node: types.DenoASTNode): node is types.LogicalExpressionNode {
   return node.type === 'LogicalExpression'
 }
 
@@ -125,7 +112,7 @@ export function isLogicalExpression(node: DenoASTNode): node is LogicalExpressio
  * @param node - The AST node to check
  * @returns True if the node is a member expression, false otherwise
  */
-export function isMemberExpression(node: DenoASTNode): node is MemberExpressionNode {
+export function isMemberExpression(node: types.DenoASTNode): node is types.MemberExpressionNode {
   return node.type === 'MemberExpression'
 }
 
@@ -134,7 +121,7 @@ export function isMemberExpression(node: DenoASTNode): node is MemberExpressionN
  * @param node - The AST node to check
  * @returns True if the node is a new expression, false otherwise
  */
-export function isNewExpression(node: DenoASTNode): node is NewExpressionNode {
+export function isNewExpression(node: types.DenoASTNode): node is types.NewExpressionNode {
   return node.type === 'NewExpression'
 }
 
@@ -143,7 +130,7 @@ export function isNewExpression(node: DenoASTNode): node is NewExpressionNode {
  * @param node - The AST node to check
  * @returns True if the node is an object expression, false otherwise
  */
-export function isObjectExpression(node: DenoASTNode): node is ObjectExpressionNode {
+export function isObjectExpression(node: types.DenoASTNode): node is types.ObjectExpressionNode {
   return node.type === 'ObjectExpression'
 }
 
@@ -152,7 +139,7 @@ export function isObjectExpression(node: DenoASTNode): node is ObjectExpressionN
  * @param node - The AST node to check
  * @returns True if the node is a this expression, false otherwise
  */
-export function isThisExpression(node: DenoASTNode): node is ThisExpressionNode {
+export function isThisExpression(node: types.DenoASTNode): node is types.ThisExpressionNode {
   return node.type === 'ThisExpression'
 }
 
@@ -161,7 +148,7 @@ export function isThisExpression(node: DenoASTNode): node is ThisExpressionNode 
  * @param node - The AST node to check
  * @returns True if the node is a TypeScript as expression, false otherwise
  */
-export function isTSAsExpression(node: DenoASTNode): node is TSAsExpressionNode {
+export function isTSAsExpression(node: types.DenoASTNode): node is types.TSAsExpressionNode {
   return node.type === 'TSAsExpression'
 }
 
@@ -170,7 +157,7 @@ export function isTSAsExpression(node: DenoASTNode): node is TSAsExpressionNode 
  * @param node - The AST node to check
  * @returns True if the node is a unary expression, false otherwise
  */
-export function isUnaryExpression(node: DenoASTNode): node is UnaryExpressionNode {
+export function isUnaryExpression(node: types.DenoASTNode): node is types.UnaryExpressionNode {
   return node.type === 'UnaryExpression'
 }
 
@@ -179,7 +166,7 @@ export function isUnaryExpression(node: DenoASTNode): node is UnaryExpressionNod
  * @param node - The AST node to check
  * @returns True if the node is an update expression, false otherwise
  */
-export function isUpdateExpression(node: DenoASTNode): node is UpdateExpressionNode {
+export function isUpdateExpression(node: types.DenoASTNode): node is types.UpdateExpressionNode {
   return node.type === 'UpdateExpression'
 }
 
@@ -188,6 +175,6 @@ export function isUpdateExpression(node: DenoASTNode): node is UpdateExpressionN
  * @param node - The AST node to check
  * @returns True if the node is a yield expression, false otherwise
  */
-export function isYieldExpression(node: DenoASTNode): node is YieldExpressionNode {
+export function isYieldExpression(node: types.DenoASTNode): node is types.YieldExpressionNode {
   return node.type === 'YieldExpression'
 }

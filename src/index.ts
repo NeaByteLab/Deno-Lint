@@ -11,14 +11,17 @@ const plugin: LintPlugin = {
     'explicit-parameter-types': rules.explicitParameterTypesRule,
     'explicit-return-types': rules.explicitReturnTypesRule,
     'prefer-array-every': rules.preferArrayEveryRule,
-    'prefer-arrow-callback': rules.preferArrowCallbackRule,
+    'prefer-array-flat': rules.preferArrayFlatRule,
+    'prefer-array-includes': rules.preferArrayIncludesRule,
     'prefer-array-some': rules.preferArraySomeRule,
+    'prefer-arrow-callback': rules.preferArrowCallbackRule,
     'prefer-const-assertions': rules.preferConstAssertionsRule,
     'prefer-early-return': rules.preferEarlyReturnRule,
     'prefer-nullish-coalescing': rules.preferNullishCoalescingRule,
     'prefer-optional-chain': rules.preferOptionalChainRule,
     'prefer-promise-reject-errors': rules.preferPromiseRejectErrorsRule,
     'prefer-spread': rules.preferSpreadRule,
+    'prefer-string-starts-ends-with': rules.preferStringStartsEndsWithRule,
     'prefer-template-literals': rules.preferTemplateLiteralsRule,
     'require-error-handling': rules.requireErrorHandlingRule
   }
