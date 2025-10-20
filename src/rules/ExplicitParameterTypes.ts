@@ -1,16 +1,5 @@
-import type { DenoASTNode, LintContext, LintFixer, ParameterNode } from '@interfaces/index.ts'
-import {
-  createAddDefaultTypeFix,
-  createAddDestructuredTypeFix,
-  createAddParameterTypeFix,
-  createAddRestTypeFix,
-  getParameterName,
-  hasParameterType,
-  isArrowFunctionExpression,
-  isFunctionDeclaration,
-  isFunctionExpression,
-  isMethodDefinition
-} from '@utils/index.ts'
+import type * as types from '@interfaces/index.ts'
+import * as utils from '@utils/index.ts'
 
 /**
  * Checks all parameters in a function for explicit type annotations.
@@ -19,13 +8,13 @@ import {
  * @param params - Array of parameter nodes to check
  */
 function checkParameters(
-  context: LintContext,
-  node: DenoASTNode,
-  params: Array<ParameterNode>
+  context: types.LintContext,
+  node: types.DenoASTNode,
+  params: Array<types.ParameterNode>
 ): void {
-  params.forEach((param: ParameterNode) => {
-    if (!hasParameterType(param)) {
-      const paramName = getParameterName(param)
+  params.forEach((param: types.ParameterNode) => {
+    if (!utils.hasParameterType(param)) {
+      const paramName = utils.getParameterName(param)
       const message = paramName
         ? `Parameter '${paramName}' must have explicit type annotation`
         : 'Parameter must have explicit type annotation'
@@ -46,21 +35,21 @@ function checkParameters(
  * @returns The appropriate fix function
  */
 function getFixFunction(
-  context: LintContext,
-  node: DenoASTNode,
-  param: ParameterNode
-): (fixer: LintFixer) => unknown {
+  context: types.LintContext,
+  node: types.DenoASTNode,
+  param: types.ParameterNode
+): (fixer: types.LintFixer) => unknown {
   switch (param.type) {
     case 'AssignmentPattern':
-      return createAddDefaultTypeFix(context, node)
+      return utils.createAddDefaultTypeFix(context, node)
     case 'Identifier':
-      return createAddParameterTypeFix(context, node, param.name || 'param')
+      return utils.createAddParameterTypeFix(context, node, param.name || 'param')
     case 'ObjectPattern':
-      return createAddDestructuredTypeFix(context, node)
+      return utils.createAddDestructuredTypeFix(context, node)
     case 'RestElement':
-      return createAddRestTypeFix(context, node)
+      return utils.createAddRestTypeFix(context, node)
     default:
-      return createAddParameterTypeFix(context, node, 'param')
+      return utils.createAddParameterTypeFix(context, node, 'param')
   }
 }
 
@@ -73,14 +62,14 @@ export const explicitParameterTypesRule = {
    * @param context - The Deno lint context for reporting issues and fixes
    * @returns Object containing visitor functions for AST node types
    */
-  create(context: LintContext): Record<string, (node: DenoASTNode) => void> {
+  create(context: types.LintContext): Record<string, (node: types.DenoASTNode) => void> {
     return {
       /**
        * Visitor function for arrow function expressions.
        * @param node - The AST node representing an arrow function expression
        */
-      ArrowFunctionExpression(node: DenoASTNode): void {
-        if (!isArrowFunctionExpression(node)) {
+      ArrowFunctionExpression(node: types.DenoASTNode): void {
+        if (!utils.isArrowFunctionExpression(node)) {
           return
         }
         checkParameters(context, node, node.params)
@@ -89,8 +78,8 @@ export const explicitParameterTypesRule = {
        * Visitor function for function declarations.
        * @param node - The AST node representing a function declaration
        */
-      FunctionDeclaration(node: DenoASTNode): void {
-        if (!isFunctionDeclaration(node)) {
+      FunctionDeclaration(node: types.DenoASTNode): void {
+        if (!utils.isFunctionDeclaration(node)) {
           return
         }
         checkParameters(context, node, node.params)
@@ -99,11 +88,11 @@ export const explicitParameterTypesRule = {
        * Visitor function for function expressions.
        * @param node - The AST node representing a function expression
        */
-      FunctionExpression(node: DenoASTNode): void {
-        if (!isFunctionExpression(node)) {
+      FunctionExpression(node: types.DenoASTNode): void {
+        if (!utils.isFunctionExpression(node)) {
           return
         }
-        if (node.parent && isMethodDefinition(node.parent as DenoASTNode)) {
+        if (node.parent && utils.isMethodDefinition(node.parent as types.DenoASTNode)) {
           return
         }
         checkParameters(context, node, node.params)
@@ -112,8 +101,8 @@ export const explicitParameterTypesRule = {
        * Visitor function for method definitions.
        * @param node - The AST node representing a method definition
        */
-      MethodDefinition(node: DenoASTNode): void {
-        if (!isMethodDefinition(node)) {
+      MethodDefinition(node: types.DenoASTNode): void {
+        if (!utils.isMethodDefinition(node)) {
           return
         }
         checkParameters(context, node, node.value.params)

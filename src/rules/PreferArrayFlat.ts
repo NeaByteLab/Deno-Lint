@@ -1,11 +1,5 @@
-import type { DenoASTNode, LintContext } from '@interfaces/index.ts'
-import {
-  createArrayFlatFix,
-  isCallExpression,
-  isConcatApplyCall,
-  isConcatCall,
-  isConcatSpreadPattern
-} from '@utils/index.ts'
+import type * as types from '@interfaces/index.ts'
+import * as utils from '@utils/index.ts'
 
 /**
  * Lint rule for preferring array.flat() over [].concat(...array) patterns.
@@ -16,29 +10,29 @@ export const preferArrayFlatRule = {
    * @param context - The Deno lint context for reporting issues and fixes
    * @returns Object containing visitor functions for AST node types
    */
-  create(context: LintContext): Record<string, (node: DenoASTNode) => void> {
+  create(context: types.LintContext): Record<string, (node: types.DenoASTNode) => void> {
     return {
       /**
        * Visitor function for call expressions.
        * @param node - The AST node representing a call expression
        */
-      CallExpression(node: DenoASTNode): void {
-        if (!isCallExpression(node)) {
+      CallExpression(node: types.DenoASTNode): void {
+        if (!utils.isCallExpression(node)) {
           return
         }
-        if (isConcatCall(node) && isConcatSpreadPattern(node)) {
+        if (utils.isConcatCall(node) && utils.isConcatSpreadPattern(node)) {
           context.report({
             node,
             message: 'Prefer array.flat() over [].concat(...array) for better readability',
-            fix: createArrayFlatFix(context, node)
+            fix: utils.createArrayFlatFix(context, node)
           })
         }
-        if (isConcatApplyCall(node)) {
+        if (utils.isConcatApplyCall(node)) {
           context.report({
             node,
             message:
               'Prefer array.flat() over Array.prototype.concat.apply([], array) for better readability',
-            fix: createArrayFlatFix(context, node)
+            fix: utils.createArrayFlatFix(context, node)
           })
         }
       }

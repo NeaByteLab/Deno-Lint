@@ -1,5 +1,5 @@
-import type { DenoASTNode, LintContext, LintFixer, StringPartType } from '@interfaces/index.ts'
-import { isBinaryExpression, isStringConcatenation, isStringLiteral } from '@utils/index.ts'
+import type * as types from '@interfaces/index.ts'
+import * as utils from '@utils/index.ts'
 
 /**
  * Checks if a binary expression can be converted to a template literal.
@@ -7,12 +7,12 @@ import { isBinaryExpression, isStringConcatenation, isStringLiteral } from '@uti
  * @param context - The lint context for accessing source code
  * @returns True if the expression can be converted, false otherwise
  */
-function canConvertToTemplateLiteral(node: DenoASTNode, context: LintContext): boolean {
-  if (!isStringConcatenation(node)) {
+function canConvertToTemplateLiteral(node: types.DenoASTNode, context: types.LintContext): boolean {
+  if (!utils.isStringConcatenation(node)) {
     return false
   }
   const parent = node.parent
-  if (parent && isBinaryExpression(parent) && parent.operator === '+') {
+  if (parent && utils.isBinaryExpression(parent) && parent.operator === '+') {
     return false
   }
   const parts = extractStringParts(node, context)
@@ -35,7 +35,7 @@ function canConvertToTemplateLiteral(node: DenoASTNode, context: LintContext): b
  * @param parts - Array of string parts
  * @returns The template literal string
  */
-function createTemplateLiteral(parts: Array<StringPartType>): string {
+function createTemplateLiteral(parts: Array<types.StringPartType>): string {
   let template = '`'
   for (const part of parts) {
     if (part.isLiteral) {
@@ -57,10 +57,10 @@ function createTemplateLiteral(parts: Array<StringPartType>): string {
  * @returns A fix function
  */
 function createTemplateLiteralFix(
-  context: LintContext,
-  node: DenoASTNode
-): (fixer: LintFixer) => unknown {
-  return (fixer: LintFixer): unknown => {
+  context: types.LintContext,
+  node: types.DenoASTNode
+): (fixer: types.LintFixer) => unknown {
+  return (fixer: types.LintFixer): unknown => {
     const parts = extractStringParts(node, context)
     const templateLiteral = createTemplateLiteral(parts)
     return fixer.replaceText(node, templateLiteral)
@@ -73,28 +73,31 @@ function createTemplateLiteralFix(
  * @param context - The lint context for accessing source code
  * @returns Array of string parts and their positions
  */
-function extractStringParts(node: DenoASTNode, context: LintContext): Array<StringPartType> {
-  if (!isBinaryExpression(node)) {
+function extractStringParts(
+  node: types.DenoASTNode,
+  context: types.LintContext
+): Array<types.StringPartType> {
+  if (!utils.isBinaryExpression(node)) {
     return []
   }
-  const parts: Array<StringPartType> = []
-  if (isBinaryExpression(node.left) && node.left.operator === '+') {
+  const parts: Array<types.StringPartType> = []
+  if (utils.isBinaryExpression(node.left) && node.left.operator === '+') {
     parts.push(...extractStringParts(node.left, context))
   } else {
     const leftText = context.sourceCode.getText(node.left)
     parts.push({
       text: leftText,
-      isLiteral: isStringLiteral(node.left),
+      isLiteral: utils.isStringLiteral(node.left),
       node: node.left
     })
   }
-  if (isBinaryExpression(node.right) && node.right.operator === '+') {
+  if (utils.isBinaryExpression(node.right) && node.right.operator === '+') {
     parts.push(...extractStringParts(node.right, context))
   } else {
     const rightText = context.sourceCode.getText(node.right)
     parts.push({
       text: rightText,
-      isLiteral: isStringLiteral(node.right),
+      isLiteral: utils.isStringLiteral(node.right),
       node: node.right
     })
   }
@@ -110,14 +113,14 @@ export const preferTemplateLiteralsRule = {
    * @param context - The Deno lint context for reporting issues and fixes
    * @returns Object containing visitor functions for AST node types
    */
-  create(context: LintContext): Record<string, (node: DenoASTNode) => void> {
+  create(context: types.LintContext): Record<string, (node: types.DenoASTNode) => void> {
     return {
       /**
        * Visitor function for binary expressions.
        * @param node - The AST node representing a binary expression
        */
-      BinaryExpression(node: DenoASTNode): void {
-        if (!isBinaryExpression(node)) {
+      BinaryExpression(node: types.DenoASTNode): void {
+        if (!utils.isBinaryExpression(node)) {
           return
         }
         if (canConvertToTemplateLiteral(node, context)) {
