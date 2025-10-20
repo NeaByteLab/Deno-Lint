@@ -8,10 +8,12 @@ This rule enforces the use of spread syntax (`...`) over manual array operations
 
 ```diff
 - const array1 = Array.from(iterable)
-- const array2 = Array.from(nodeList)
-- const array3 = Array.from(set)
 + const array1 = [...iterable]
+
+- const array2 = Array.from(nodeList)
 + const array2 = [...nodeList]
+
+- const array3 = Array.from(set)
 + const array3 = [...set]
 ```
 
@@ -19,60 +21,50 @@ This rule enforces the use of spread syntax (`...`) over manual array operations
 
 ```diff
 - const combined1 = arr.concat(otherArr)
-- const combined2 = arr.concat(item1, item2)
-- const combined3 = arr.concat(arr1, arr2, arr3)
 + const combined1 = [...arr, ...otherArr]
+
+- const combined2 = arr.concat(item1, item2)
 + const combined2 = [...arr, item1, item2]
+
+- const combined3 = arr.concat(arr1, arr2, arr3)
 + const combined3 = [...arr, ...arr1, ...arr2, ...arr3]
 ```
 
 ### Function Returns
 
 ```diff
-- function processData(data) {
+  function processData(data) {
 -   return Array.from(data)
-- }
--
-- function combineArrays() {
--   return arr.concat(otherArr)
-- }
-+ function processData(data) {
 +   return [...data]
-+ }
-+
-+ function combineArrays() {
+  }
+
+  function combineArrays() {
+-   return arr.concat(otherArr)
 +   return [...arr, ...otherArr]
-+ }
+  }
 ```
 
 ### Object Properties
 
 ```diff
-- const config = {
+  const config = {
 -   items: Array.from(iterable)
-- }
--
-- const results = [Array.from(data), Array.from(otherData)]
-+ const config = {
 +   items: [...iterable]
-+ }
-+
+  }
+
+- const results = [Array.from(data), Array.from(otherData)]
 + const results = [[...data], [...otherData]]
 ```
 
 ### Class Methods
 
 ```diff
-- class DataProcessor {
--   combine(data) {
+  class DataProcessor {
+    combine(data) {
 -     return this.items.concat(data)
--   }
-- }
-+ class DataProcessor {
-+   combine(data) {
 +     return [...this.items, ...data]
-+   }
-+ }
+    }
+  }
 ```
 
 ## Rule Scope

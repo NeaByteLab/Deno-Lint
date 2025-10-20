@@ -8,10 +8,12 @@ This rule enforces the use of template literals over string concatenation when b
 
 ```diff
 - const message = 'Hello ' + name + '!'
-- const greeting = 'Welcome ' + user.name + '!'
-- const status = 'User ' + user.id + ' is ' + user.status
 + const message = `Hello ${name}!`
+
+- const greeting = 'Welcome ' + user.name + '!'
 + const greeting = `Welcome ${user.name}!`
+
+- const status = 'User ' + user.id + ' is ' + user.status
 + const status = `User ${user.id} is ${user.status}`
 ```
 
@@ -19,10 +21,12 @@ This rule enforces the use of template literals over string concatenation when b
 
 ```diff
 - const result = 'User ' + user.name + ' has ' + count + ' items'
-- const url = 'https://api.example.com/users/' + userId + '/posts/' + postId
-- const log = '[' + new Date().toISOString() + '] ' + level + ': ' + message
 + const result = `User ${user.name} has ${count} items`
+
+- const url = 'https://api.example.com/users/' + userId + '/posts/' + postId
 + const url = `https://api.example.com/users/${userId}/posts/${postId}`
+
+- const log = '[' + new Date().toISOString() + '] ' + level + ': ' + message
 + const log = `[${new Date().toISOString()}] ${level}: ${message}`
 ```
 
@@ -30,43 +34,38 @@ This rule enforces the use of template literals over string concatenation when b
 
 ```diff
 - const output = 'Result: ' + getValue() + ' units'
-- const error = 'Error in ' + getFunctionName() + ': ' + error.message
-- const summary = 'Total: ' + calculateTotal() + ' items processed'
 + const output = `Result: ${getValue()} units`
+
+- const error = 'Error in ' + getFunctionName() + ': ' + error.message
 + const error = `Error in ${getFunctionName()}: ${error.message}`
+
+- const summary = 'Total: ' + calculateTotal() + ' items processed'
 + const summary = `Total: ${calculateTotal()} items processed`
 ```
 
 ### Function Returns
 
 ```diff
-- function createMessage(name: string) {
+  function createMessage(name: string) {
 -   return 'Hello ' + name + '!'
-- }
--
-- const handler = (event: Event) => {
--   console.log('Event: ' + event.type + ' at ' + new Date().toISOString())
-- }
-+ function createMessage(name: string) {
 +   return `Hello ${name}!`
-+ }
-+
-+ const handler = (event: Event) => {
+  }
+
+  const handler = (event: Event) => {
+-   console.log('Event: ' + event.type + ' at ' + new Date().toISOString())
 +   console.log(`Event: ${event.type} at ${new Date().toISOString()}`)
-+ }
+  }
 ```
 
 ### Object Properties
 
 ```diff
-- const config = {
+  const config = {
 -   apiUrl: 'https://api.example.com/v' + version,
--   timeout: 'Request timeout: ' + timeout + 'ms'
-- }
-+ const config = {
 +   apiUrl: `https://api.example.com/v${version}`,
+-   timeout: 'Request timeout: ' + timeout + 'ms'
 +   timeout: `Request timeout: ${timeout}ms`
-+ }
+  }
 ```
 
 ## Rule Scope

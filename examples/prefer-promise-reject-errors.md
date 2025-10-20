@@ -7,118 +7,82 @@ This rule enforces the use of Error objects in `Promise.reject()` calls instead 
 ### String Values
 
 ```diff
-- function fetchUser(id: string) {
--   if (!id) {
+  function fetchUser(id: string) {
+    if (!id) {
 -     return Promise.reject('Invalid user ID')
--   }
--   if (id === 'admin') {
--     return Promise.reject('Access denied')
--   }
--   return Promise.resolve({ id, name: 'John' })
-- }
-+ function fetchUser(id: string) {
-+   if (!id) {
 +     return Promise.reject(new Error('Invalid user ID'))
-+   }
-+   if (id === 'admin') {
+    }
+    if (id === 'admin') {
+-     return Promise.reject('Access denied')
 +     return Promise.reject(new Error('Access denied'))
-+   }
-+   return Promise.resolve({ id, name: 'John' })
-+ }
+    }
+    return Promise.resolve({ id, name: 'John' })
+  }
 ```
 
 ### Number Values
 
 ```diff
-- function validateInput(input: any) {
--   if (typeof input !== 'string') {
+  function validateInput(input: any) {
+    if (typeof input !== 'string') {
 -     return Promise.reject(400)
--   }
--   if (input.length < 3) {
--     return Promise.reject(422)
--   }
--   return Promise.resolve(input)
-- }
-+ function validateInput(input: any) {
-+   if (typeof input !== 'string') {
 +     return Promise.reject(new Error('400'))
-+   }
-+   if (input.length < 3) {
+    }
+    if (input.length < 3) {
+-     return Promise.reject(422)
 +     return Promise.reject(new Error('422'))
-+   }
-+   return Promise.resolve(input)
-+ }
+    }
+    return Promise.resolve(input)
+  }
 ```
 
 ### Boolean Values
 
 ```diff
-- function processRequest(data: any) {
--   if (!data) {
+  function processRequest(data: any) {
+    if (!data) {
 -     return Promise.reject(false)
--   }
--   if (data.invalid) {
--     return Promise.reject(true)
--   }
--   return Promise.resolve(data)
-- }
-+ function processRequest(data: any) {
-+   if (!data) {
 +     return Promise.reject(new Error('No data provided'))
-+   }
-+   if (data.invalid) {
+    }
+    if (data.invalid) {
+-     return Promise.reject(true)
 +     return Promise.reject(new Error('Invalid data format'))
-+   }
-+   return Promise.resolve(data)
-+ }
+    }
+    return Promise.resolve(data)
+  }
 ```
 
 ### Null/Undefined Values
 
 ```diff
-- function getConfig() {
--   const config = loadConfig()
--   if (!config) {
+  function getConfig() {
+    const config = loadConfig()
+    if (!config) {
 -     return Promise.reject(null)
--   }
--   if (config.error) {
--     return Promise.reject(undefined)
--   }
--   return Promise.resolve(config)
-- }
-+ function getConfig() {
-+   const config = loadConfig()
-+   if (!config) {
 +     return Promise.reject(new Error('Configuration not found'))
-+   }
-+   if (config.error) {
+    }
+    if (config.error) {
+-     return Promise.reject(undefined)
 +     return Promise.reject(new Error('Configuration error'))
-+   }
-+   return Promise.resolve(config)
-+ }
+    }
+    return Promise.resolve(config)
+  }
 ```
 
 ### Arrow Functions
 
 ```diff
-- const validateUser = (user: any) => {
--   if (!user.name) {
+  const validateUser = (user: any) => {
+    if (!user.name) {
 -     return Promise.reject('Name is required')
--   }
--   if (user.age < 18) {
--     return Promise.reject('User must be 18 or older')
--   }
--   return Promise.resolve(user)
-- }
-+ const validateUser = (user: any) => {
-+   if (!user.name) {
 +     return Promise.reject(new Error('Name is required'))
-+   }
-+   if (user.age < 18) {
+    }
+    if (user.age < 18) {
+-     return Promise.reject('User must be 18 or older')
 +     return Promise.reject(new Error('User must be 18 or older'))
-+   }
-+   return Promise.resolve(user)
-+ }
+    }
+    return Promise.resolve(user)
+  }
 ```
 
 ## Rule Scope

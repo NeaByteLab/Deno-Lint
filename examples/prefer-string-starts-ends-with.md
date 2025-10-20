@@ -15,6 +15,8 @@ This rule enforces the use of `String.startsWith()` and `String.endsWith()` over
 + }
 ```
 
+### String Ends With Check
+
 ```diff
 - if (str.substring(str.length - 3) === "xyz") {
 -   console.log('Ends with xyz')
@@ -35,6 +37,8 @@ This rule enforces the use of `String.startsWith()` and `String.endsWith()` over
 + }
 ```
 
+### Function Returns Ends With
+
 ```diff
 - function checkSuffix(str, suffix) {
 -   return str.substring(str.length - suffix.length) === suffix
@@ -50,6 +54,8 @@ This rule enforces the use of `String.startsWith()` and `String.endsWith()` over
 - const startsWithPrefix = str.substring(0, prefix.length) === prefix
 + const startsWithPrefix = str.startsWith(prefix)
 ```
+
+### Variable Assignment Ends With
 
 ```diff
 - const endsWithSuffix = str.substring(str.length - suffix.length) === suffix
@@ -67,6 +73,8 @@ This rule enforces the use of `String.startsWith()` and `String.endsWith()` over
 + }
 ```
 
+### Method Call Ends With
+
 ```diff
 - const isImage = filename.substring(filename.length - 4) === ".jpg"
 + const isImage = filename.endsWith(".jpg")
@@ -82,6 +90,8 @@ This rule enforces the use of `String.startsWith()` and `String.endsWith()` over
 +   console.log('Title found')
 + }
 ```
+
+### Property Access Ends With
 
 ```diff
 - const isEmail = user.email.substring(user.email.length - 4) === ".com"

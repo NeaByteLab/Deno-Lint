@@ -7,81 +7,71 @@ This rule enforces the use of `Array.every()` over manual for loops that return 
 ### Basic Array Validation
 
 ```diff
-- function validateUsers(users) {
+  function validateUsers(users) {
 -   for (let i = 0; i < users.length; i++) {
 -     if (!users[i].isActive) {
 -       return false
 -     }
 -   }
 -   return true
-- }
-+ function validateUsers(users) {
 +   return users.every(user => user.isActive)
-+ }
+  }
 ```
 
 ### Number Array Validation
 
 ```diff
-- function checkNumbers(numbers) {
+  function checkNumbers(numbers) {
 -   for (let i = 0; i < numbers.length; i++) {
 -     if (numbers[i] <= 0) {
 -       return false
 -     }
 -   }
 -   return true
-- }
-+ function checkNumbers(numbers) {
 +   return numbers.every(number => number > 0)
-+ }
+  }
 ```
 
 ### Method Call Validation
 
 ```diff
-- function processItems(items) {
+  function processItems(items) {
 -   for (let i = 0; i < items.length; i++) {
 -     if (!items[i].isValid()) {
 -       return false
 -     }
 -   }
 -   return true
-- }
-+ function processItems(items) {
 +   return items.every(item => item.isValid())
-+ }
+  }
 ```
 
 ### Complex Condition Validation
 
 ```diff
-- function validateComplex(items) {
+function validateComplex(items) {
 -   for (let i = 0; i < items.length; i++) {
 -     if (!items[i].active || items[i].value <= threshold) {
 -       return false
 -     }
 -   }
 -   return true
-- }
-+ function validateComplex(items) {
 +   return items.every(item => item.active && item.value > threshold)
-+ }
+  }
 ```
 
 ### Property Access Validation
 
 ```diff
-- function checkUsers(users) {
+  function checkUsers(users) {
 -   for (let i = 0; i < users.length; i++) {
 -     if (!users[i].profile.isActive) {
 -       return false
 -     }
 -   }
 -   return true
-- }
-+ function checkUsers(users) {
 +   return users.every(user => user.profile.isActive)
-+ }
+  }
 ```
 
 ## Rule Scope

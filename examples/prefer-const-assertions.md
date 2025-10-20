@@ -21,23 +21,19 @@ This rule enforces the use of const assertions (`as const`) on array and object 
 ### Return Statement Array
 
 ```diff
-- function getColors() {
+  function getColors() {
 -   return ['red', 'green', 'blue']
-- }
-+ function getColors() {
 +   return ['red', 'green', 'blue'] as const
-+ }
+  }
 ```
 
 ### Return Statement Object
 
 ```diff
-- function getConfig() {
+  function getConfig() {
 -   return { apiUrl: 'https://api.example.com', timeout: 5000 }
-- }
-+ function getConfig() {
 +   return { apiUrl: 'https://api.example.com', timeout: 5000 } as const
-+ }
+  }
 ```
 
 ### Arrow Function Return

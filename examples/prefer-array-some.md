@@ -7,81 +7,71 @@ This rule enforces the use of `Array.some()` over manual for loops that return `
 ### Basic Array Search
 
 ```diff
-- function hasActiveUsers(users) {
+  function hasActiveUsers(users) {
 -   for (let i = 0; i < users.length; i++) {
 -     if (users[i].isActive) {
 -       return true
 -     }
 -   }
 -   return false
-- }
-+ function hasActiveUsers(users) {
 +   return users.some(user => user.isActive)
-+ }
+  }
 ```
 
 ### Number Array Search
 
 ```diff
-- function hasPositiveNumbers(numbers) {
+  function hasPositiveNumbers(numbers) {
 -   for (let i = 0; i < numbers.length; i++) {
 -     if (numbers[i] > 0) {
 -       return true
 -     }
 -   }
 -   return false
-- }
-+ function hasPositiveNumbers(numbers) {
 +   return numbers.some(number => number > 0)
-+ }
+  }
 ```
 
 ### Method Call Search
 
 ```diff
-- function hasValidItems(items) {
+  function hasValidItems(items) {
 -   for (let i = 0; i < items.length; i++) {
 -     if (items[i].isValid()) {
 -       return true
 -     }
 -   }
 -   return false
-- }
-+ function hasValidItems(items) {
 +   return items.some(item => item.isValid())
-+ }
+  }
 ```
 
 ### Complex Condition Search
 
 ```diff
-- function hasComplexMatch(items) {
+  function hasComplexMatch(items) {
 -   for (let i = 0; i < items.length; i++) {
 -     if (items[i].active && items[i].value > threshold) {
 -       return true
 -     }
 -   }
 -   return false
-- }
-+ function hasComplexMatch(items) {
 +   return items.some(item => item.active && item.value > threshold)
-+ }
+  }
 ```
 
 ### Property Access Search
 
 ```diff
-- function hasActiveUsers(users) {
+  function hasActiveUsers(users) {
 -   for (let i = 0; i < users.length; i++) {
 -     if (users[i].profile.isActive) {
 -       return true
 -     }
 -   }
 -   return false
-- }
-+ function hasActiveUsers(users) {
 +   return users.some(user => user.profile.isActive)
-+ }
+  }
 ```
 
 ## Rule Scope

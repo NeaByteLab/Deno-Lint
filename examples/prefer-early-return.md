@@ -21,15 +21,12 @@ This rule enforces the use of early returns over nested conditions to improve co
 +   if (!user) {
 +     return 'unauthorized'
 +   }
-+
 +   if (!user.isActive) {
 +     return 'unauthorized'
 +   }
-+
 +   if (user.role === 'admin') {
 +     return 'authorized'
 +   }
-+
 +   return 'unauthorized'
 + }
 ```
@@ -51,15 +48,12 @@ This rule enforces the use of early returns over nested conditions to improve co
 +   if (!input) {
 +     return false
 +   }
-+
 +   if (typeof input !== 'string') {
 +     return false
 +   }
-+
 +   if (input.length <= 0) {
 +     return false
 +   }
-+
 +   return true
 + }
 ```
@@ -81,15 +75,12 @@ This rule enforces the use of early returns over nested conditions to improve co
 +   if (!file) {
 +     throw new Error('Invalid file')
 +   }
-+
 +   if (file.size <= 0) {
 +     throw new Error('Invalid file')
 +   }
-+
 +   if (file.type !== 'image/jpeg') {
 +     throw new Error('Invalid file')
 +   }
-+
 +   return await uploadToServer(file)
 + }
 ```
@@ -114,15 +105,12 @@ This rule enforces the use of early returns over nested conditions to improve co
 +     if (!id) {
 +       throw new Error('Invalid ID')
 +     }
-+
 +     if (typeof id !== 'string') {
 +       throw new Error('Invalid ID')
 +     }
-+
 +     if (id.length <= 0) {
 +       throw new Error('Invalid ID')
 +     }
-+
 +     return await this.api.getUser(id)
 +   }
 + }
@@ -145,15 +133,12 @@ This rule enforces the use of early returns over nested conditions to improve co
 +   if (!(user && user.isActive)) {
 +     return 'unauthorized'
 +   }
-+
 +   if (!(user.role === 'admin' || user.role === 'moderator')) {
 +     return 'unauthorized'
 +   }
-+
 +   if (!(user.permissions && user.permissions.length > 0)) {
 +     return 'unauthorized'
 +   }
-+
 +   return 'authorized'
 + }
 ```

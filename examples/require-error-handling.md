@@ -8,18 +8,19 @@ This rule enforces proper error handling for Deno file operations by requiring t
 
 ```diff
 - function readConfig() {
--   const config = Deno.readTextFile('./config.json') // Missing await
+-   const config = Deno.readTextFile('./config.json')
 -   return JSON.parse(config)
-- }
--
-- function saveData(data: any) {
--   Deno.writeTextFile('./data.json', JSON.stringify(data)) // Missing await
 - }
 + async function readConfig() {
 +   const config = await Deno.readTextFile('./config.json')
 +   return JSON.parse(config)
 + }
-+
+```
+
+```diff
+- function saveData(data: any) {
+-   Deno.writeTextFile('./data.json', JSON.stringify(data))
+- }
 + async function saveData(data: any) {
 +   await Deno.writeTextFile('./data.json', JSON.stringify(data))
 + }
@@ -29,82 +30,37 @@ This rule enforces proper error handling for Deno file operations by requiring t
 
 ```diff
 - function copyFiles() {
--   Deno.copyFile('./source.txt', './destination.txt') // Missing await
-- }
--
-- function createDirectory() {
--   Deno.mkdir('./new-folder') // Missing await
+-   Deno.copyFile('./source.txt', './destination.txt')
 - }
 + async function copyFiles() {
 +   await Deno.copyFile('./source.txt', './destination.txt')
 + }
-+
+```
+
+```diff
+- function createDirectory() {
+-   Deno.mkdir('./new-folder')
+- }
 + async function createDirectory() {
 +   await Deno.mkdir('./new-folder')
-+ }
-```
-
-### File Information Operations
-
-```diff
-- function getFileInfo() {
--   const stats = Deno.stat('./file.txt') // Missing await
--   return stats.size
-- }
--
-- function readDirectory() {
--   const files = Deno.readDir('./src') // Missing await
--   return Array.from(files)
-- }
-+ async function getFileInfo() {
-+   const stats = await Deno.stat('./file.txt')
-+   return stats.size
-+ }
-+
-+ async function readDirectory() {
-+   const files = Deno.readDir('./src')
-+   return Array.from(files)
-+ }
-```
-
-### Multiple Operations
-
-```diff
-- function processFiles() {
--   const config = Deno.readTextFile('./config.json') // Missing await
--   const data = Deno.readTextFile('./data.json') // Missing await
--   Deno.writeTextFile('./result.json', JSON.stringify({ config, data })) // Missing await
-- }
-+ async function processFiles() {
-+   const config = await Deno.readTextFile('./config.json')
-+   const data = await Deno.readTextFile('./data.json')
-+   await Deno.writeTextFile('./result.json', JSON.stringify({ config, data }))
 + }
 ```
 
 ### Class Methods
 
 ```diff
-- class FileManager {
--   async loadConfig() {
--     const config = Deno.readTextFile('./config.json') // Missing await
--     return JSON.parse(config)
--   }
--
--   saveUser(user: any) {
--     Deno.writeTextFile(`./users/${user.id}.json`, JSON.stringify(user)) // Missing await
--   }
-- }
-+ class FileManager {
-+   async loadConfig() {
+  class FileManager {
+    async loadConfig() {
+-     const config = Deno.readTextFile('./config.json')
 +     const config = await Deno.readTextFile('./config.json')
-+     return JSON.parse(config)
-+   }
-+
-+   async saveUser(user: any) {
+      return JSON.parse(config)
+    }
+
+    saveUser(user: any) {
+-     Deno.writeTextFile(`./users/${user.id}.json`, JSON.stringify(user))
 +     await Deno.writeTextFile(`./users/${user.id}.json`, JSON.stringify(user))
-+   }
-+ }
+    }
+  }
 ```
 
 ## Covered Deno Operations

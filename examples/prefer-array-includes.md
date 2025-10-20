@@ -8,12 +8,12 @@ This rule enforces the use of `Array.includes()` over manual `indexOf() !== -1` 
 
 ```diff
 - if (arr.indexOf(item) !== -1) {
--   console.log('Item found')
-- }
 + if (arr.includes(item)) {
-+   console.log('Item found')
-+ }
+    console.log('Item found')
+  }
 ```
+
+### Variable Assignment
 
 ```diff
 - const found = arr.indexOf(item) !== -1
@@ -23,13 +23,13 @@ This rule enforces the use of `Array.includes()` over manual `indexOf() !== -1` 
 ### Function Returns
 
 ```diff
-- function hasItem(arr, item) {
+  function hasItem(arr, item) {
 -   return arr.indexOf(item) !== -1
-- }
-+ function hasItem(arr, item) {
 +   return arr.includes(item)
-+ }
+  }
 ```
+
+### Arrow Function Returns
 
 ```diff
 - const checkExists = (items, target) => items.indexOf(target) !== -1
@@ -40,12 +40,12 @@ This rule enforces the use of `Array.includes()` over manual `indexOf() !== -1` 
 
 ```diff
 - if (getArray().indexOf(getItem()) !== -1) {
--   console.log('Found')
-- }
 + if (getArray().includes(getItem())) {
-+   console.log('Found')
-+ }
+    console.log('Found')
+  }
 ```
+
+### Simple Variable Assignment
 
 ```diff
 - const exists = items.indexOf(item) !== -1
@@ -56,11 +56,9 @@ This rule enforces the use of `Array.includes()` over manual `indexOf() !== -1` 
 
 ```diff
 - if (obj.items.indexOf(item) !== -1) {
--   console.log('Item in collection')
-- }
 + if (obj.items.includes(item)) {
-+   console.log('Item in collection')
-+ }
+    console.log('Item in collection')
+  }
 ```
 
 ```diff

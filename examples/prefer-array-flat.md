@@ -11,6 +11,8 @@ This rule enforces the use of `Array.flat()` over manual flattening patterns lik
 + const flattened = nestedArray.flat()
 ```
 
+### Array.prototype.concat.apply Pattern
+
 ```diff
 - const flattened = Array.prototype.concat.apply([], nestedArray)
 + const flattened = nestedArray.flat()
@@ -19,13 +21,13 @@ This rule enforces the use of `Array.flat()` over manual flattening patterns lik
 ### Function Returns
 
 ```diff
-- function flattenArray(arr) {
+  function flattenArray(arr) {
 -   return Array.prototype.concat.apply([], arr)
-- }
-+ function flattenArray(arr) {
 +   return arr.flat()
-+ }
+  }
 ```
+
+### Arrow Function Returns
 
 ```diff
 - const flattenData = (data) => Array.prototype.concat.apply([], data)
@@ -35,16 +37,12 @@ This rule enforces the use of `Array.flat()` over manual flattening patterns lik
 ### Class Methods
 
 ```diff
-- class ArrayUtils {
--   flatten(arr) {
+  class ArrayUtils {
+    flatten(arr) {
 -     return Array.prototype.concat.apply([], arr)
--   }
-- }
-+ class ArrayUtils {
-+   flatten(arr) {
 +     return arr.flat()
-+   }
-+ }
+    }
+  }
 ```
 
 ### Complex Expressions
@@ -53,6 +51,8 @@ This rule enforces the use of `Array.flat()` over manual flattening patterns lik
 - const flattened = Array.prototype.concat.apply([], getNestedArrays())
 + const flattened = getNestedArrays().flat()
 ```
+
+### Spread Operator Pattern
 
 ```diff
 - const result = [].concat(...getData())
@@ -65,6 +65,8 @@ This rule enforces the use of `Array.flat()` over manual flattening patterns lik
 - const flattened = Array.prototype.concat.apply([], condition ? arr1 : arr2)
 + const flattened = (condition ? arr1 : arr2).flat()
 ```
+
+### Simple Array Processing
 
 ```diff
 - const processed = [].concat(...items)

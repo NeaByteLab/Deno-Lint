@@ -8,10 +8,12 @@ This rule enforces the use of optional chaining (`?.`) over logical AND (`&&`) f
 
 ```diff
 - const name = user && user.name
-- const email = user && user.profile && user.profile.email
-- const count = data && data.items && data.items.length
 + const name = user?.name
+
+- const email = user && user.profile && user.profile.email
 + const email = user?.profile?.email
+
+- const count = data && data.items && data.items.length
 + const count = data?.items?.length
 ```
 
@@ -19,10 +21,12 @@ This rule enforces the use of optional chaining (`?.`) over logical AND (`&&`) f
 
 ```diff
 - const result = api && api.getData()
-- const user = service && service.getUser(id)
-- const processed = data && data.filter().map()
 + const result = api?.getData()
+
+- const user = service && service.getUser(id)
 + const user = service?.getUser(id)
+
+- const processed = data && data.filter().map()
 + const processed = data?.filter()?.map()
 ```
 
@@ -30,25 +34,24 @@ This rule enforces the use of optional chaining (`?.`) over logical AND (`&&`) f
 
 ```diff
 - const value = obj && obj[key]
-- const item = array && array[index]
-- const prop = config && config[setting]
 + const value = obj?.[key]
+
+- const item = array && array[index]
 + const item = array?.[index]
+
+- const prop = config && config[setting]
 + const prop = config?.[setting]
 ```
 
 ### Function Returns
 
 ```diff
-- function getUserName(user) {
+  function getUserName(user) {
 -   return user && user.name
-- }
--
-- const getUserEmail = user => user && user.profile && user.profile.email
-+ function getUserName(user) {
 +   return user?.name
-+ }
-+
+  }
+
+- const getUserEmail = user => user && user.profile && user.profile.email
 + const getUserEmail = user => user?.profile?.email
 ```
 
@@ -56,8 +59,9 @@ This rule enforces the use of optional chaining (`?.`) over logical AND (`&&`) f
 
 ```diff
 - const greeting = `Hello ${user && user.name}!`
-- const status = `Count: ${data && data.items && data.items.length}`
 + const greeting = `Hello ${user?.name}!`
+
+- const status = `Count: ${data && data.items && data.items.length}`
 + const status = `Count: ${data?.items?.length}`
 ```
 

@@ -8,10 +8,12 @@ This rule enforces the use of nullish coalescing operator (`??`) over logical OR
 
 ```diff
 - const displayName = user.name || ''
-- const message = input || ''
-- const title = config.title || ''
 + const displayName = user.name ?? ''
+
+- const message = input || ''
 + const message = input ?? ''
+
+- const title = config.title || ''
 + const title = config.title ?? ''
 ```
 
@@ -19,47 +21,51 @@ This rule enforces the use of nullish coalescing operator (`??`) over logical OR
 
 ```diff
 - const count = items.length || 0
-- const index = searchIndex || 0
-- const timeout = settings.timeout || 0
 + const count = items.length ?? 0
+
+- const index = searchIndex || 0
 + const index = searchIndex ?? 0
+
+- const timeout = settings.timeout || 0
 + const timeout = settings.timeout ?? 0
 ```
 
 ### Boolean False Default
 
 ```diff
-- const enabled = feature.flag || false
-- const visible = config.show || false
-- const required = field.required || false
 + const enabled = feature.flag ?? false
+- const enabled = feature.flag || false
+
+- const visible = config.show || false
 + const visible = config.show ?? false
+
+- const required = field.required || false
 + const required = field.required ?? false
 ```
 
 ### Object Properties with Falsy Defaults
 
 ```diff
-- const user = {
+  const user = {
 -   name: input.name || '',
--   count: data.count || 0,
--   active: status.active || false
-- }
-+ const user = {
 +   name: input.name ?? '',
+-   count: data.count || 0,
 +   count: data.count ?? 0,
+-   active: status.active || false
 +   active: status.active ?? false
-+ }
+  }
 ```
 
 ### Template Literals with Falsy Values
 
 ```diff
 - const greeting = `Hello ${user.name || ''}!`
-- const status = `Count: ${items.length || 0}`
-- const message = `Debug: ${config.debug || false}`
 + const greeting = `Hello ${user.name ?? ''}!`
+
+- const status = `Count: ${items.length || 0}`
 + const status = `Count: ${items.length ?? 0}`
+
+- const message = `Debug: ${config.debug || false}`
 + const message = `Debug: ${config.debug ?? false}`
 ```
 

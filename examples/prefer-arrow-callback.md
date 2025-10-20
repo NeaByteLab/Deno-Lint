@@ -35,13 +35,10 @@ This rule enforces the use of arrow functions over regular function expressions 
 
 ```diff
 - const results = numbers.map(function (num) {
--   const doubled = num * 2
--   return doubled
-- })
 + const results = numbers.map(num => {
-+   const doubled = num * 2
-+   return doubled
-+ })
+    const doubled = num * 2
+    return doubled
+  })
 ```
 
 ### Destructuring Callback
