@@ -126,7 +126,9 @@ export function createAddSuffixFix(
   return (fixer: types.LintFixer): unknown => {
     const original = context.sourceCode.getText(node)
     const functionName = utils.getFunctionName(node)
-    if (!functionName) return null
+    if (!functionName) {
+      return null
+    }
     const newText = original.replace(
       new RegExp(`(async\\s+function\\s+)${utils.escapeRegExp(functionName)}(\\s*\\()`),
       `$1${functionName}${suffix}$2`
