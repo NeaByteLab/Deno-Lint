@@ -1,18 +1,25 @@
 {
   "links": [".."],
   "lint": {
-    "plugins": ["jsr:@neabyte/deno-lint@0.2.1"],
+    "plugins": ["jsr:@neabyte/deno-lint@0.3.1"],
     "rules": {
       "exclude": [
         "deno-lint/async-function-naming",
         "deno-lint/explicit-parameter-types",
         "deno-lint/explicit-return-types",
+        "deno-lint/prefer-arrow-callback",
+        "deno-lint/prefer-array-every",
+        "deno-lint/prefer-array-flat",
+        "deno-lint/prefer-array-includes",
+        "deno-lint/prefer-array-some",
         "deno-lint/prefer-const-assertions",
+        "deno-lint/prefer-early-return",
         "deno-lint/prefer-nullish-coalescing",
         "deno-lint/prefer-optional-chain",
-        "deno-lint/prefer-template-literals",
-        "deno-lint/prefer-early-return",
         "deno-lint/prefer-promise-reject-errors",
+        "deno-lint/prefer-spread",
+        "deno-lint/prefer-string-starts-ends-with",
+        "deno-lint/prefer-template-literals",
         "deno-lint/require-error-handling"
       ]
     }
